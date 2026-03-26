@@ -1,0 +1,119 @@
+# Seeds for classical (mostly PD) fairy-tale texts via Project Gutenberg.
+# heroes_en / heroes_ru — подсказки для отчёта и RAG (двуязычно).
+# content_lang: язык *текста* в чанках (у Gutenberg по умолчанию en; локальные
+#   файлы — ru). Для русского полнотекста с Gutenberg задайте content_lang: ru.
+# Political news are intentionally OUT OF SCOPE for this RAG.
+
+gutenberg_epubs:
+  - id: 2591
+    domain: european
+    country: DE
+    author: "Brothers Grimm"
+    heroes_en: "Red Riding Hood; Snow White; wolf; witch; many folk figures"
+    heroes_ru: "Красная Шапочка; Белоснежка; волк; ведьма; множество народных образов"
+    note: "Grimms' Fairy Tales"
+  - id: 1597
+    domain: european
+    country: DK
+    author: "Hans Christian Andersen"
+    heroes_en: "The Little Mermaid; The Snow Queen; usual Andersen figures"
+    heroes_ru: "Русалочка; Снежная королева; типичные персонажи Андерсена"
+    note: "Hans Christian Andersen fairy tales (selection)"
+  - id: 25421
+    domain: european
+    country: FR
+    author: "Charles Perrault"
+    heroes_en: "Cinderella; Bluebeard; Sleeping Beauty; Puss in Boots"
+    heroes_ru: "Золушка; Синяя Борода; Спящая красавица; Кот в сапогах"
+    note: "Charles Perrault — Tales of Passed Times"
+  - id: 503
+    domain: european
+    country: GB-SCT
+    author: "Andrew Lang"
+    heroes_en: "Anthology — many European and world tale figures"
+    heroes_ru: "Антология — европейские и мировые сказочные образы"
+    note: "Andrew Lang — The Blue Fairy Book"
+  - id: 3282
+    domain: european_compilation
+    country: GB-SCT
+    author: "Andrew Lang"
+    heroes_en: "Anthology — mixed regions"
+    heroes_ru: "Антология — смешанные регионы"
+    note: "Andrew Lang — The Brown Fairy Book (incl. some non-European)"
+  - id: 128
+    domain: oriental
+    country: MENA
+    author: "anonymous / compiled (tr. Lang)"
+    heroes_en: "Scheherazade; viziers; djinni (var.)"
+    heroes_ru: "Шахерезада; визири; джинны (разные варианты)"
+    note: "The Arabian Nights Entertainments (Lang selection)"
+  - id: 34956
+    domain: european_compilation
+    country: GB-ENG
+    author: "Anthony R. Montalba (compiler)"
+    heroes_en: "Anthology — many nations"
+    heroes_ru: "Антология — много народов"
+    note: "Fairy Tales From All Nations (Montalba)"
+
+  # Russian folk (English PD translations on Gutenberg; plot RAG for pipeline).
+  - id: 62509
+    domain: russian
+    country: RU
+    author: "Alexander Afanasyev (corpus; tr. Post Wheeler et al.)"
+    heroes_en: "Fire-Bird; Vasilisa; Father Frost; Frog Princess; many tale types"
+    heroes_ru: "Жар-птица; Василиса; Мороз Иванович; Царевна-лягушка; типы сказок"
+    note: "Russian Folk-Tales — Afanasyev tradition (Gutenberg English)"
+  - id: 34705
+    domain: russian
+    country: RU
+    author: "N. A. Polevoi (tr.) / Russian skazki tradition"
+    heroes_en: "Saltan; tsars; fox; typical Russian tale figures"
+    heroes_ru: "Салтан; цари; лиса; типичные русские сказочные образы"
+    note: "Russian Fairy Tales from the Skazki of Polevoi"
+  - id: 16981
+    domain: russian
+    country: RU
+    author: "Arthur Ransome (reteller)"
+    heroes_en: "Baba Yaga; Ivan; fool who flies; folk figures"
+    heroes_ru: "Баба-Яга; Иван; простак и летающее чудо; народные образы"
+    note: "Old Peter's Russian Tales"
+  - id: 12851
+    domain: russian
+    country: RU
+    author: "Verra Kalamatiano de Blumenthal"
+    heroes_en: "Anthology — East Slavic folk motifs"
+    heroes_ru: "Антология — восточнославянские фольклорные мотивы"
+    note: "Folk Tales from the Russian"
+
+  # Literary Russian (PD English translation on Gutenberg).
+  - id: 38025
+    domain: russian
+    country: RU
+    author: "Leo Tolstoy (Л. Н. Толстой)"
+    heroes_en: "Fables; children's stories; moral tales; natural science stories"
+    heroes_ru: "Басни; рассказы для детей; поучительные сказки; естествознание"
+    note: "Fables for Children, Stories for Children… (Gutenberg EN)"
+
+# Local UTF-8 .txt: narrow globs first (metadata wins), then broad **.
+# content_lang по умолчанию ru (русский текст файла).
+local_globs:
+  - pattern: "data/raw/local_tales/soviet/**/*.txt"
+    default_domain: russian
+    country: USSR
+    content_lang: ru
+    author: ""
+    heroes_en: ""
+    heroes_ru: ""
+  - pattern: "data/raw/local_tales/russian/**/*.txt"
+    default_domain: russian
+    country: RU
+    content_lang: ru
+    author: ""
+    heroes_en: ""
+    heroes_ru: ""
+  - pattern: "data/raw/local_tales/**/*.txt"
+    default_domain: russian
+    country: RU
+    content_lang: ru
+    heroes_en: ""
+    heroes_ru: ""
