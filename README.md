@@ -21,6 +21,11 @@
 | `data/chroma_fairy_tales/` | Локальная БД Chroma (векторы, метаданные) |
 | `data/raw/local_tales/` | Локальные UTF‑8 `.txt`: общий каталог, подпапки `russian/`, `soviet/` |
 | `data/rag_pipeline_state.json` | Хеши источников для инкрементального update |
+| `app/` | FastAPI; цепочка из 4 LLM-агентов: `agents_pipeline.py` |
+| `tests/` | Pytest; e2e: `test_e2e_multi_agent.py` |
+| `frontend/` | Статика: три шага + блок аудита и вопрос–ответ |
+| `scripts/start_web.ps1`, `stop_web.ps1` | Запуск/остановка uvicorn (Windows) |
+| `scripts/start_web.sh`, `stop_web.sh` | Запуск (foreground) / остановка порта (Linux/macOS) |
 | `requirements.txt` | Python-зависимости |
 
 ## Что сделано
@@ -56,6 +61,62 @@ pip install -r requirements.txt
 ```
 
 Первый запуск подтянет модель с Hugging Face (нужен интернет).
+
+## Веб-MVP (нейро-сказочник)
+
+Три шага в браузере: **новость** (мок-список или свой текст) → **пресет сказки**
+(RAG-фильтры) → **текст, аудит, вопрос с эталонным ответом**. На сервере:
+агент новостей (JSON-сводка) → **ретрив и выбор якорного `source` в Chroma по
+схожести** → агент генерации → аудит → вопрос–ответ (четыре вызова LLM).
+
+**Интеграционный e2e** (мок LLM, нужен собранный RAG):
+
+```bash
+python -m pytest tests/test_e2e_multi_agent.py -q
+```
+
+Живой OpenAI в том же файле: `RUN_LIVE_OPENAI_E2E=1` и `OPENAI_API_KEY`.
+
+**Подготовка:** собрать индекс сказок и задать ключ API.
+
+```bash
+python -m rag --reset
+# Windows PowerShell:
+$env:OPENAI_API_KEY = "sk-..."   # или постоянно в системе
+# опционально: $env:OPENAI_MODEL = "gpt-4o-mini"
+```
+
+### Запуск и остановка сервера
+
+Из корня репозитория (с активированным `.venv` при ручном запуске).
+
+**Windows (отдельное окно uvicorn):**
+
+```powershell
+.\scripts\start_web.ps1
+# другой порт: .\scripts\start_web.ps1 -Port 9000
+```
+
+Остановка процесса на порту **8765**:
+
+```powershell
+.\scripts\stop_web.ps1
+# .\scripts\stop_web.ps1 -Port 9000
+```
+
+**Вручную (любая ОС, foreground):**
+
+```bash
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8765
+```
+
+Останов — `Ctrl+C` в том же терминале.
+
+**Linux/macOS:** foreground — `chmod +x scripts/start_web.sh && ./scripts/start_web.sh`
+(переменная `PORT` опциональна). Остановка фонового процесса:
+`chmod +x scripts/stop_web.sh && ./scripts/stop_web.sh` (нужны `fuser` или `lsof`).
+
+Откройте в браузере: `http://127.0.0.1:8765/`.
 
 ### `ModuleNotFoundError: No module named 'chromadb'`
 
