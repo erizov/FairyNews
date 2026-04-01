@@ -16,6 +16,12 @@
 | `etap1_utverzhdenie_temy.md` | Этап 1: тема, мультиагентная архитектура |
 | `etap2_sbor_i_obrabotka_bazy.md` | Этап 2: сбор базы, источники |
 | `istochniki_skazok_novostey_i_rag.md` | Списки сайтов, заметки по RAG / агентам |
+| `etap3.md` | Этап 3: прототип нейро-сотрудника |
+| `etap3_screenshots_instruction.md` | Требования к скриншотам ответов LLM для отчёта этапа 3 |
+| `etap4.md` | Этап 4: финальная версия; ноутбук и планы e2e, логов, веб-отчёта |
+| `notebooks/fairy_news_final.ipynb` | Локальный Jupyter: снимок RAG + пайплайн |
+| `data/notebook_rag_snapshot.json` | Мини-RAG для ноутбука и e2e без Chroma |
+| `experiments/EXPERIMENTS_TEMPLATE.md` | Шаблон файла экспериментов (этап 4) |
 | `rag/` | Код RAG: индексация, отчёт, пайплайн |
 | `rag/sources/fairy_tale_seeds.yaml` | Семена Gutenberg + локальные маски `.txt` |
 | `data/chroma_fairy_tales/` | Локальная БД Chroma (векторы, метаданные) |
@@ -69,21 +75,26 @@ pip install -r requirements.txt
 агент новостей (JSON-сводка) → **ретрив и выбор якорного `source` в Chroma по
 схожести** → агент генерации → аудит → вопрос–ответ (четыре вызова LLM).
 
-**Интеграционный e2e** (мок LLM, нужен собранный RAG):
+**Интеграционный e2e** (по умолчанию **снимок RAG** + **stub LLM**, без Chroma и без API):
 
 ```bash
 python -m pytest tests/test_e2e_multi_agent.py -q
 ```
 
-Живой OpenAI в том же файле: `RUN_LIVE_OPENAI_E2E=1` и `OPENAI_API_KEY`.
+Дополнительно: прогон с **Chroma** и фиксированным mock LLM (нужен
+`python -m rag --reset`). Живой OpenAI только локально:
+`RUN_LIVE_OPENAI_E2E=1` и `OPENAI_API_KEY` (в CI не используется).
 
-**Подготовка:** собрать индекс сказок и задать ключ API.
+**Подготовка для веба с Chroma:** собрать индекс и задать ключ API; либо
+режим снимка (см. ниже).
 
 ```bash
 python -m rag --reset
 # Windows PowerShell:
 $env:OPENAI_API_KEY = "sk-..."   # или постоянно в системе
 # опционально: $env:OPENAI_MODEL = "gpt-4o-mini"
+# без Chroma (снимок data/notebook_rag_snapshot.json):
+# $env:FAIRYNEWS_RAG_BACKEND = "snapshot"
 ```
 
 ### Запуск и остановка сервера
@@ -117,6 +128,50 @@ python -m uvicorn app.main:app --host 127.0.0.1 --port 8765
 `chmod +x scripts/stop_web.sh && ./scripts/stop_web.sh` (нужны `fuser` или `lsof`).
 
 Откройте в браузере: `http://127.0.0.1:8765/`.
+
+**Отчёты по прогонам:** после генерации сохраняется JSON в
+`data/reports/runs/` (файлы в `.gitignore`). Веб-UI:
+`http://127.0.0.1:8765/reports-ui/index.html` — строка таблицы ведёт на
+детальный просмотр (`detail.html?id=…`). API: `GET /api/reports/runs`,
+`GET /api/reports/runs/{run_id}`.
+
+### Переменные окружения (этап 4)
+
+| Переменная | Значение |
+|------------|----------|
+| `OPENAI_API_KEY` | Ключ; если пусто — **stub** LLM |
+| `OPENAI_MODEL` | По умолчанию `gpt-4o-mini` |
+| `OPENAI_BASE_URL` | Совместимый с OpenAI API endpoint (опционально) |
+| `FAIRYNEWS_LLM_MODE=stub` | Принудительно заглушка |
+| `FAIRYNEWS_RAG_BACKEND` | `chroma` (по умолчанию) или `snapshot` |
+| `FAIRYNEWS_REPORTS_DIR` | Каталог для JSON отчётов (override) |
+| `FAIRYNEWS_SAVE_REPORTS` | `0` — не писать отчёт после `/api/generate` |
+
+### Скриншоты e2e (веб, Playwright)
+
+```bash
+pip install playwright
+playwright install chromium
+python scripts/capture_e2e_screenshots.py
+```
+
+Результат: каталог `e2e_screenshots/` (5 PNG + `SCREENSHOTS.md`). RAG по
+снимку `data/notebook_rag_snapshot.json`; LLM — по `OPENAI_API_KEY` в окружении
+процесса.
+
+### Jupyter (локально, без Colab)
+
+```bash
+# из корня репозитория
+pip install -r requirements.txt
+jupyter notebook notebooks/fairy_news_final.ipynb
+```
+
+Выполняйте ячейки по порядку; **тестовая ячейка в конце** запрашивает текст
+новости и `preset_id`. По умолчанию используется
+`data/notebook_rag_snapshot.json`; полный Chroma по-прежнему собирается
+вручную: `python -m rag --reset`. Word-отчёт этапа 3 экспортируется отдельно
+(скрипт в репозиторий не входит).
 
 ### `ModuleNotFoundError: No module named 'chromadb'`
 

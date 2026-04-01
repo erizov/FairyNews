@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FairyNews — прогон</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz@0,7..72;1,7..72&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/collage.css">
+  <style>
+    :root {
+      --bg: #f0e8dc;
+      --card: #fffefb;
+      --accent: #5c3619;
+      --muted: #5a534a;
+      --border: #c9b39a;
+      --shadow: 0 4px 24px rgba(44, 36, 28, 0.08);
+      font-family: "Source Sans 3", system-ui, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(165deg, var(--bg) 0%, #e4d8c8 100%);
+      color: #1f1812;
+    }
+    .top {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    .top-inner {
+      max-width: 52rem;
+      margin: 0 auto;
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .nav a {
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-left: 1rem;
+      text-decoration: none;
+    }
+    .nav a:hover { text-decoration: underline; }
+    .wrap {
+      max-width: 52rem;
+      margin: 0 auto;
+      padding: 1.5rem 1rem 3rem;
+    }
+    .panel {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 1.35rem;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(201, 179, 154, 0.45);
+    }
+    h1 {
+      font-family: Literata, Georgia, serif;
+      font-size: 1.35rem;
+      color: var(--accent);
+      margin: 0 0 0.5rem;
+    }
+    h2 {
+      font-family: Literata, Georgia, serif;
+      font-size: 1.05rem;
+      color: var(--accent);
+      margin: 1.35rem 0 0.5rem;
+      padding-bottom: 0.25rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .muted { color: var(--muted); font-size: 0.9rem; line-height: 1.45; }
+    pre {
+      white-space: pre-wrap;
+      background: #f8f4ec;
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-size: 0.82rem;
+      line-height: 1.45;
+    }
+    #talefull {
+      font-family: Literata, Georgia, serif;
+      font-size: 1rem;
+      line-height: 1.65;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 0.5rem 0;
+      font-size: 0.85rem;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 0.4rem 0.55rem;
+      text-align: left;
+    }
+    th { background: #f3ebe0; font-weight: 600; }
+    .prompts-tbl { table-layout: fixed; }
+    .prompts-tbl th[scope="row"] {
+      width: 6.5rem;
+      vertical-align: top;
+      font-weight: 600;
+      background: #faf6ef;
+    }
+    .prompts-tbl td { vertical-align: top; }
+    .prompts-tbl td:nth-child(2) { width: 6rem; white-space: nowrap; }
+    .prompts-tbl .prompt-cell {
+      max-height: 14rem;
+      overflow: auto;
+      margin: 0;
+      font-size: 0.78rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    #err {
+      padding: 0.75rem;
+      background: #fce8ec;
+      color: #7a1f33;
+      border-radius: 8px;
+      border: 1px solid #f0c4cd;
+    }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="top-inner">
+      <span style="font-family:Literata,serif;font-weight:600;color:var(--accent);">FairyNews</span>
+      <nav class="nav">
+        <a href="/">Генерация</a>
+        <a href="index.html">Сводка</a>
+      </nav>
+    </div>
+  </header>
+  <div class="collage-strip detail-wide" aria-hidden="true">
+    <div id="collageMountDetail"></div>
+    <p class="collage-caption" hidden>Коллаж: мотивы печати и фольклора
+      (декор).</p>
+  </div>
+  <div class="wrap">
+    <div class="panel">
+      <h1 id="title">Детали прогона</h1>
+      <p id="err" class="muted" hidden></p>
+      <div id="main" hidden>
+        <p class="muted"><span id="meta"></span></p>
+        <p id="reportNav" class="muted"></p>
+        <h2>Исходная новость (полный текст)</h2>
+        <pre id="newsfull"></pre>
+        <h2>Сказка (полный текст)</h2>
+        <pre id="talefull"></pre>
+        <h2>Длительность</h2>
+        <pre id="timing"></pre>
+        <h2>Промпты агентов (system / user)</h2>
+        <p id="promptsMissing" class="muted" hidden>Для этого прогона нет
+          сохранённых промптов (отчёт старее обновления или усечён).</p>
+        <div id="promptsWrap" hidden>
+          <table class="prompts-tbl" id="promptsTbl" aria-label="Промпты">
+            <thead>
+              <tr>
+                <th scope="col">Агент</th>
+                <th scope="col">Т° / токены</th>
+                <th scope="col">System</th>
+                <th scope="col">User</th>
+              </tr>
+            </thead>
+            <tbody id="promptsBody"></tbody>
+          </table>
+        </div>
+        <h2>Промежуточные ответы агентов</h2>
+        <pre id="agents"></pre>
+        <h2>RAG top-k</h2>
+        <table id="ragtbl">
+          <thead><tr><th>source</th><th>distance</th><th>snippet</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <h2>Голосование за якорь</h2>
+        <pre id="votes"></pre>
+        <h2>Эвристики новость ↔ сказка</h2>
+        <pre id="heur"></pre>
+        <h2>Вопрос и эталон</h2>
+        <pre id="qa"></pre>
+      </div>
+    </div>
+  </div>
+  <script>
+(function () {
+  var params = new URLSearchParams(window.location.search);
+  var id = params.get("id");
+  var errEl = document.getElementById("err");
+  if (!id) {
+    errEl.hidden = false;
+    errEl.textContent = "Нет параметра id в URL.";
+    return;
+  }
+  fetch("/api/reports/runs/" + encodeURIComponent(id))
+    .then(function (r) {
+      if (!r.ok) throw new Error(r.statusText);
+      return r.json();
+    })
+    .then(function (d) {
+      document.getElementById("main").hidden = false;
+      document.getElementById("title").textContent = "Прогон " + d.run_id;
+      var rb = d.run_by ? " · кто: " + d.run_by : "";
+      document.getElementById("meta").textContent =
+        (d.created_at || "") + rb + " · LLM " + (d.llm && d.llm.provider) +
+        " / " + (d.llm && d.llm.model) + " · preset " + (d.preset_id || "—");
+      var navP = document.getElementById("reportNav");
+      var aLog = document.createElement("a");
+      aLog.href = d.llm_log_url ||
+        ("llm-log.html?id=" + encodeURIComponent(d.run_id || id));
+      aLog.textContent = "Журнал LLM (запрос/ответ по шагам)";
+      navP.appendChild(aLog);
+      if (!d.llm_log_url) {
+        var hint = document.createElement("span");
+        hint.textContent = " — для старых прогонов может не сохраняться.";
+        navP.appendChild(hint);
+      }
+      function escHtml(s) {
+        if (s == null) { return ""; }
+        return String(s)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+      var ap = d.agent_prompts;
+      if (ap && typeof ap === "object") {
+        var pairs = [
+          ["news", "Новости"],
+          ["story", "Сказка"],
+          ["audit", "Аудит"],
+          ["qa", "Вопрос–ответ"]
+        ];
+        var pbody = document.getElementById("promptsBody");
+        pairs.forEach(function (pair) {
+          var key = pair[0];
+          var label = pair[1];
+          var b = ap[key];
+          if (!b) { return; }
+          var tr = document.createElement("tr");
+          var tTxt = (b.temperature != null ? b.temperature : "—") +
+            " / " + (b.max_tokens != null ? b.max_tokens : "—");
+          tr.innerHTML =
+            "<th scope=\"row\">" + escHtml(label) + "</th>" +
+            "<td>" + escHtml(tTxt) + "</td>" +
+            "<td><pre class=\"prompt-cell\">" + escHtml(b.system || "") +
+            "</pre></td>" +
+            "<td><pre class=\"prompt-cell\">" + escHtml(b.user || "") +
+            "</pre></td>";
+          pbody.appendChild(tr);
+        });
+        if (pbody.children.length) {
+          document.getElementById("promptsWrap").hidden = false;
+        } else {
+          document.getElementById("promptsMissing").hidden = false;
+        }
+      } else {
+        document.getElementById("promptsMissing").hidden = false;
+      }
+      document.getElementById("newsfull").textContent = d.news_raw || "";
+      document.getElementById("talefull").textContent = d.tale || "";
+      document.getElementById("timing").textContent = JSON.stringify(
+        d.timing || {}, null, 2);
+      document.getElementById("agents").textContent = JSON.stringify(
+        d.agent_outputs || {}, null, 2);
+      var rag = d.rag || {};
+      var tb = document.querySelector("#ragtbl tbody");
+      (rag.top_k || []).forEach(function (row) {
+        var tr = document.createElement("tr");
+        tr.innerHTML = "<td>" + (row.source || "") + "</td><td>" +
+          (row.distance != null ? row.distance : "") + "</td><td>" +
+          (row.snippet || "") + "</td>";
+        tb.appendChild(tr);
+      });
+      document.getElementById("votes").textContent = JSON.stringify(
+        rag.anchor_vote_weights || {}, null, 2);
+      document.getElementById("heur").textContent = JSON.stringify(
+        d.heuristics || {}, null, 2);
+      var qa = d.qa || {};
+      document.getElementById("qa").textContent =
+        (qa.question || "") + "\n\n— Эталон:\n" + (qa.reference_answer || "");
+    })
+    .catch(function () {
+      errEl.hidden = false;
+      errEl.textContent =
+        "Прогон не найден (404) или ошибка сети.";
+    });
+})();
+  </script>
+  <script src="/static/collage.js"></script>
+  <script>
+    window.fairyNewsMountCollage("collageMountDetail");
+  </script>
+</body>
+</html>

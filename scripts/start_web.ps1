@@ -1,6 +1,7 @@
 # Start FairyNews MVP (uvicorn) in a separate minimized console window.
 param(
-    [int]$Port = 8765
+    [int]$Port = 8765,
+    [switch]$Reload
 )
 $ErrorActionPreference = "Stop"
 $Root = Split-Path -Parent $PSScriptRoot
@@ -18,6 +19,13 @@ $argList = @(
     "--host", "127.0.0.1",
     "--port", "$Port"
 )
+if ($Reload) {
+    $argList += "--reload"
+}
 Start-Process -FilePath $py -ArgumentList $argList `
     -WorkingDirectory $Root -WindowStyle Minimized
-Write-Host "Started http://127.0.0.1:$Port (new window). OPENAI_API_KEY must be set."
+$mode = if ($Reload) { "reload" } else { "fixed" }
+Write-Host (
+    "Started http://127.0.0.1:$Port ($mode, new window). " +
+    "Configure API keys in .env if needed."
+)

@@ -1,31 +1,43 @@
-"""Four LLM agents + deterministic RAG tale anchor (этап 1)."""
+"""Four LLM agents + deterministic RAG tale anchor (этап 1, этап 4)."""
 
 from __future__ import annotations
 
 import logging
+import os
+import time
 from collections import defaultdict
+from pathlib import Path
 from typing import Any, Sequence
 
-from rag.retrieve import retrieve_plot_records
+from rag.rag_enhanced import run_retrieval
+from rag.snapshot_retrieve import DEFAULT_SNAPSHOT_PATH
 
-from app.llm_utils import (
-    chat_json_object,
-    chat_text,
-    get_model_name,
-    get_openai_client,
-)
+from app.heuristics import compute_news_tale_heuristics
+from app.llm_providers import LLMProvider, resolve_pipeline_llm_providers
+from app.report_storage import utc_now_iso
 from app.story_service import normalize_news_text
 
 logger = logging.getLogger(__name__)
 
-_RAG_K = 15
 _TOP_FOR_VOTE = 10
+
+
+def _rag_k_from_env() -> int:
+    raw = os.environ.get("FAIRYNEWS_RAG_K", "15").strip()
+    try:
+        k = int(raw)
+    except ValueError:
+        return 15
+    return max(1, min(k, 50))
+
+
+def default_snapshot_path() -> Path:
+    return DEFAULT_SNAPSHOT_PATH
 
 
 def _pick_primary_source(
     records: list[tuple[str, dict[str, Any], float]],
 ) -> tuple[str, list[tuple[str, dict[str, Any], float]]]:
-    """Weight sources by inverse distance in top hits; prefer best-matching work."""
     if not records:
         return "", []
     scores: dict[str, float] = defaultdict(float)
@@ -58,24 +70,76 @@ def _build_rag_block(
     return "\n\n---\n\n".join(blocks)
 
 
+def _top_k_for_report(
+    records: list[tuple[str, dict[str, Any], float]],
+    *,
+    limit: int = 12,
+) -> list[dict[str, Any]]:
+    out: list[dict[str, Any]] = []
+    for doc, meta, dist in records[:limit]:
+        out.append(
+            {
+                "source": str(meta.get("source", "")),
+                "work_note": str(meta.get("work_note", "")),
+                "domain": str(meta.get("domain", "")),
+                "distance": round(float(dist), 6),
+                "snippet": doc[:200].replace("\n", " "),
+            }
+        )
+    return out
+
+
 def run_four_agent_pipeline(
     news_text: str,
     retrieval_hint: str,
     domains: Sequence[str] | None,
+    *,
+    llm: LLMProvider | None = None,
+    rag_backend: str | None = None,
+    snapshot_path: Path | None = None,
+    preset_id: str | None = None,
+    news_id: str | None = None,
+    run_by: str | None = None,
 ) -> dict[str, Any]:
-    """News → RAG (pick work) → story → audit → Q&A."""
-    client = get_openai_client()
-    model = get_model_name()
+    """News → RAG → story → audit → Q&A. Adds ``report`` for persistence."""
+    wall0 = time.perf_counter()
+    per_stage_on, stage_llm = resolve_pipeline_llm_providers(llm=llm)
+    uni_raw = os.environ.get("FAIRYNEWS_LLM_UNIFORM_STAGES", "").strip().lower()
+    uniform_stages = uni_raw in ("1", "true", "yes", "on")
+    backend = (
+        rag_backend
+        or os.environ.get("FAIRYNEWS_RAG_BACKEND", "chroma")
+    ).strip().lower()
+
     news_raw = normalize_news_text(news_text)
+    llm_trace: list[dict[str, Any]] = []
 
     news_sys = (
         "Ты агент новостей. Сожми вход в JSON: summary (строка), "
         "themes (массив 2–5 строк), retrieval_keywords (одна строка "
-        "для поиска похожих сказок, по-русски)."
+        "для гибридного поиска по сказкам: по-русски, 4–12 ключевых "
+        "слов и устойчивых сочетаний, характерных сказочные образы "
+        "и предметы (царь, изба, дорога, справедливость и т.п.), "
+        "без цитирования заголовка дословно)."
     )
     news_user = f"Новость:\n{news_raw}"
-    news_json = chat_json_object(
-        client, model, news_sys, news_user, temperature=0.2
+    _t0 = time.perf_counter()
+    news_json = stage_llm["news"].chat_json_object(
+        news_sys, news_user, temperature=0.2, max_tokens=1200
+    )
+    t_news = time.perf_counter() - _t0
+    llm_trace.append(
+        {
+            "step": "news",
+            "call": "chat_json_object",
+            "request": {
+                "system": news_sys,
+                "user": news_user,
+                "temperature": 0.2,
+                "max_tokens": 1200,
+            },
+            "response": news_json,
+        },
     )
     summary = str(news_json.get("summary", news_raw))[:1200]
     themes_raw = news_json.get("themes")
@@ -88,27 +152,52 @@ def run_four_agent_pipeline(
         f"Темы: {', '.join(themes)}\nСводка: {summary}"
     )
 
+    snap = snapshot_path or default_snapshot_path()
+    rag_k = _rag_k_from_env()
+    hint_for_focus = (retrieval_hint or "").strip()
+    focus_phrases = list(themes) + [kw, summary[:400]]
+    if hint_for_focus:
+        focus_phrases.append(hint_for_focus)
+    _t_r0 = time.perf_counter()
     try:
-        records = retrieve_plot_records(rag_query, k=_RAG_K, domains=domains)
+        records, rag_meta = run_retrieval(
+            rag_query,
+            k=rag_k,
+            backend=backend,
+            domains=domains,
+            snapshot_path=snap if backend == "snapshot" else None,
+            focus_phrases=focus_phrases,
+        )
     except Exception:
         logger.exception("RAG retrieve failed")
         raise RuntimeError(
             "Не удалось прочитать индекс сказок. "
-            "Выполните: python -m rag --reset"
+            "Chroma: python -m rag --reset; snapshot: проверьте JSON."
         ) from None
+    t_rag = time.perf_counter() - _t_r0
 
     if not records:
         raise RuntimeError(
-            "Индекса нет или он пуст. Выполните: python -m rag --reset"
+            "Индекс пуст или снимок пуст. Для Chroma: python -m rag --reset; "
+            "для snapshot: data/notebook_rag_snapshot.json"
         )
 
     chosen_source, curated = _pick_primary_source(records)
     rag_block = _build_rag_block(curated)
+    vote_weights: dict[str, float] = defaultdict(float)
+    for _d, m, dist in records[:_TOP_FOR_VOTE]:
+        s = str(m.get("source", ""))
+        if s:
+            vote_weights[s] += 1.0 / (1.0 + float(dist))
 
     story_sys = (
         "Ты агент генерации сказки. Оригинальный русский текст в духе "
         "русской народной сказки; отрази идеи новости метафорически. "
-        "Не копируй корпус дословно — мотивы и стиль."
+        "Опора из RAG получена гибридным поиском (вектор + BM25, слияние "
+        "рангов RRF), при необходимости второй проход с уточнённым запросом; "
+        "фрагменты чанков сжаты по бюджету с приоритетом релевантных "
+        "предложений в порядке чтения. Не копируй корпус дословно — "
+        "мотивы и атмосфера, не формулировки источника."
     )
     story_user = (
         f"Новость (структурировано):\n{summary}\n"
@@ -117,13 +206,26 @@ def run_four_agent_pipeline(
         f"{rag_block}\n\n"
         "Напиши цельную сказку примерно 600–1200 слов с завершённым финалом."
     )
-    tale_draft = chat_text(
-        client,
-        model,
+    _t1 = time.perf_counter()
+    tale_draft = stage_llm["story"].chat_text(
         story_sys,
         story_user,
         temperature=0.85,
         max_tokens=3500,
+    )
+    t_story = time.perf_counter() - _t1
+    llm_trace.append(
+        {
+            "step": "story",
+            "call": "chat_text",
+            "request": {
+                "system": story_sys,
+                "user": story_user,
+                "temperature": 0.85,
+                "max_tokens": 3500,
+            },
+            "response": {"text": tale_draft},
+        },
     )
 
     audit_sys = (
@@ -132,8 +234,23 @@ def run_four_agent_pipeline(
         "notes (строка), tale (полный исправленный текст или пустая строка)."
     )
     audit_user = f"Сводка новости:\n{summary}\n\nСказка:\n{tale_draft}\n"
-    audit_json = chat_json_object(
-        client, model, audit_sys, audit_user, temperature=0.2
+    _t2 = time.perf_counter()
+    audit_json = stage_llm["audit"].chat_json_object(
+        audit_sys, audit_user, temperature=0.2, max_tokens=1200
+    )
+    t_audit = time.perf_counter() - _t2
+    llm_trace.append(
+        {
+            "step": "audit",
+            "call": "chat_json_object",
+            "request": {
+                "system": audit_sys,
+                "user": audit_user,
+                "temperature": 0.2,
+                "max_tokens": 1200,
+            },
+            "response": audit_json,
+        },
     )
     approved = bool(audit_json.get("approved", True))
     notes = str(audit_json.get("notes", ""))
@@ -145,18 +262,49 @@ def run_four_agent_pipeline(
         "JSON: question, reference_answer (по-русски)."
     )
     qa_user = f"Сказка:\n{tale_final}\n"
-    qa_json = chat_json_object(
-        client,
-        model,
+    _t3 = time.perf_counter()
+    qa_json = stage_llm["qa"].chat_json_object(
         qa_sys,
         qa_user,
         temperature=0.4,
         max_tokens=900,
     )
+    t_qa = time.perf_counter() - _t3
+    llm_trace.append(
+        {
+            "step": "qa",
+            "call": "chat_json_object",
+            "request": {
+                "system": qa_sys,
+                "user": qa_user,
+                "temperature": 0.4,
+                "max_tokens": 900,
+            },
+            "response": qa_json,
+        },
+    )
     question = str(qa_json.get("question", ""))
     ref_ans = str(qa_json.get("reference_answer", ""))
 
-    return {
+    heur = compute_news_tale_heuristics(
+        summary,
+        themes,
+        tale_final,
+        chunk_sources=[str(m.get("source", "")) for _d, m, _ in records[:8]],
+    )
+
+    llm_sum = t_news + t_story + t_audit + t_qa
+    timing: dict[str, Any] = {
+        "rag_retrieve_sec": round(t_rag, 4),
+        "llm_news_sec": round(t_news, 4),
+        "llm_story_sec": round(t_story, 4),
+        "llm_audit_sec": round(t_audit, 4),
+        "llm_qa_sec": round(t_qa, 4),
+        "llm_total_sec": round(llm_sum, 4),
+        "pipeline_wall_sec": round(time.perf_counter() - wall0, 4),
+    }
+
+    client: dict[str, Any] = {
         "tale": tale_final,
         "news_brief": {
             "summary": summary,
@@ -171,3 +319,96 @@ def run_four_agent_pipeline(
             "reference_answer": ref_ans,
         },
     }
+
+    report_payload: dict[str, Any] = {
+        "created_at": utc_now_iso(),
+        "preset_id": preset_id,
+        "news_id": news_id,
+        "run_by": (run_by or "").strip() or "anonymous",
+        "news_raw": news_raw,
+        "rag_query_chars": len(rag_query),
+        "tale": tale_final,
+        "news_brief": client["news_brief"],
+        "chosen_tale_source": client["chosen_tale_source"],
+        "rag_chunks_used": client["rag_chunks_used"],
+        "audit": client["audit"],
+        "qa": client["qa"],
+        "rag": {
+            "backend": backend,
+            "k_retrieve": rag_k,
+            "snapshot_path": str(snap) if backend == "snapshot" else None,
+            "top_k": _top_k_for_report(records),
+            "anchor_vote_weights": {
+                k: round(v, 6) for k, v in vote_weights.items()
+            },
+            "chunks_in_prompt": len(curated),
+            **rag_meta,
+        },
+        "llm": {
+            "per_stage": per_stage_on,
+            "uniform_stages": uniform_stages,
+            "provider": (
+                "mixed"
+                if per_stage_on and not uniform_stages
+                else stage_llm["news"].provider_name
+            ),
+            "model": (
+                stage_llm["story"].model_label
+                if per_stage_on
+                else stage_llm["news"].model_label
+            ),
+            "stages": {
+                s: {
+                    "provider": stage_llm[s].provider_name,
+                    "model": stage_llm[s].model_label,
+                }
+                for s in stage_llm
+            },
+        },
+        "timing": timing,
+        "generation": {
+            "tale_chars": len(tale_final),
+            "audit_revised": bool(revised),
+            "question_len": len(question),
+            "answer_len": len(ref_ans),
+        },
+        "heuristics": heur,
+        "llm_trace": llm_trace,
+        "agent_prompts": {
+            "news": {
+                "system": news_sys,
+                "user": news_user,
+                "temperature": 0.2,
+                "max_tokens": 1200,
+            },
+            "story": {
+                "system": story_sys,
+                "user": story_user,
+                "temperature": 0.85,
+                "max_tokens": 3500,
+            },
+            "audit": {
+                "system": audit_sys,
+                "user": audit_user,
+                "temperature": 0.2,
+                "max_tokens": 1200,
+            },
+            "qa": {
+                "system": qa_sys,
+                "user": qa_user,
+                "temperature": 0.4,
+                "max_tokens": 900,
+            },
+        },
+        "agent_outputs": {
+            "news_json": news_json,
+            "story_draft": tale_draft,
+            "audit_json": audit_json,
+            "qa_json": qa_json,
+        },
+    }
+    prof = os.environ.get("FAIRYNEWS_TEST_PROFILE", "").strip()
+    if prof:
+        report_payload["test_profile"] = prof
+    client["report"] = report_payload
+    return client

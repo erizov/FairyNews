@@ -1,0 +1,103 @@
+<!DOCTYPE html><html lang='ru'><head><meta charset='utf-8'><title>AITunnel benchmark</title><style>body{font-family:system-ui;margin:1rem;max-width:52rem;}pre{background:#f6f6f0;padding:.75rem;overflow:auto;font-size:11px;}</style></head><body><h1>Пайплайн: mixed vs uniform (одна новость)</h1><h3>Новость</h3><pre>Дачники, нанимающие нелегалов, заплатят за их депортацию: как
+правильно выбрать рабочих
+
+Кстати, к ответственности за наем на работу нелегальных мигрантов
+могут привлечь не только дачников. Например, вы пригласили няню для
+присмотра за детьми или пожилыми родственниками, наняли плиточника или
+штукатура, чтобы сделать ремонт в квартире или частном доме — во всех
+этих случаях вы становитесь работодателем и несете ответственность и за
+себя, и за тех, кого пригласили.
+
+Юристы напоминают: формальный договор и копии документов не
+освобождают от проверки законности пребывания наемных работников.
+Если у иностранца нет разрешения на труд, штрафы и расходы на выдворение
+могут лечь на того, кто организовал работу и оплату. На практике это
+касается не только крупных компаний, но и частных бригад на даче:
+от покоса травы до возведения теплицы.
+
+Как снизить риски. Спросите у кандидатов патент, разрешение или иной
+законный статус и сверьте данные через официальные сервисы. Храните
+сканы с согласия исполнителя, фиксируйте даты и объём работ. При
+сомнениях лучше обратиться в юрконсультацию или нанять бригаду через
+организацию с лицензией: тогда ответственность за кадры распределена
+явно. Помните: э</pre><h2>Сценарий 1 — разные модели</h2><pre>{
+  "timing": {
+    "rag_retrieve_sec": 6.0941,
+    "llm_news_sec": 10.15,
+    "llm_story_sec": 16.4921,
+    "llm_audit_sec": 25.8279,
+    "llm_qa_sec": 7.9316,
+    "llm_total_sec": 60.4016,
+    "pipeline_wall_sec": 68.7333
+  },
+  "llm": {
+    "per_stage": true,
+    "uniform_stages": false,
+    "provider": "mixed",
+    "model": "openai/gpt-4o",
+    "stages": {
+      "news": {
+        "provider": "openai",
+        "model": "openai/gpt-5"
+      },
+      "story": {
+        "provider": "openai",
+        "model": "openai/gpt-4o"
+      },
+      "audit": {
+        "provider": "openai",
+        "model": "openai/gpt-5"
+      },
+      "qa": {
+        "provider": "openai",
+        "model": "openai/gpt-5"
+      }
+    }
+  },
+  "generation": {
+    "tale_chars": 2935,
+    "audit_revised": false,
+    "question_len": 48,
+    "answer_len": 209
+  }
+}</pre><h2>Сценарий 2 — одна модель</h2><pre>{
+  "timing": {
+    "rag_retrieve_sec": 5.9158,
+    "llm_news_sec": 10.5536,
+    "llm_story_sec": 59.4955,
+    "llm_audit_sec": 30.2201,
+    "llm_qa_sec": 14.4853,
+    "llm_total_sec": 114.7546,
+    "pipeline_wall_sec": 121.0439
+  },
+  "llm": {
+    "per_stage": true,
+    "uniform_stages": true,
+    "provider": "openai",
+    "model": "openai/gpt-5",
+    "stages": {
+      "news": {
+        "provider": "openai",
+        "model": "openai/gpt-5"
+      },
+      "story": {
+        "provider": "openai",
+        "model": "openai/gpt-5"
+      },
+      "audit": {
+        "provider": "openai",
+        "model": "openai/gpt-5"
+      },
+      "qa": {
+        "provider": "openai",
+        "model": "openai/gpt-5"
+      }
+    }
+  },
+  "generation": {
+    "tale_chars": 5411,
+    "audit_revised": false,
+    "question_len": 0,
+    "answer_len": 0
+  }
+}</pre></body></html>

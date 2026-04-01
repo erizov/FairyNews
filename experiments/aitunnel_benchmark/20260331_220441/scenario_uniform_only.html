@@ -1,0 +1,35 @@
+<!DOCTYPE html><html lang='ru'><head><meta charset='utf-8'><title>Сценарий 2 — одна модель</title><style>body{font-family:system-ui;margin:1rem;}pre{background:#f4f4ea;padding:.75rem;font-size:11px;white-space:pre-wrap;}</style></head><body><h1>Сценарий 2 — одна модель</h1><pre>{
+  "timing": {
+    "rag_retrieve_sec": 5.9158,
+    "llm_news_sec": 10.5536,
+    "llm_story_sec": 59.4955,
+    "llm_audit_sec": 30.2201,
+    "llm_qa_sec": 14.4853,
+    "llm_total_sec": 114.7546,
+    "pipeline_wall_sec": 121.0439
+  },
+  "llm": {
+    "per_stage": true,
+    "uniform_stages": true,
+    "provider": "openai",
+    "model": "openai/gpt-5",
+    "stages": {
+      "news": {
+        "provider": "openai",
+        "model": "openai/gpt-5"
+      },
+      "story": {
+        "provider": "openai",
+        "model": "openai/gpt-5"
+      },
+      "audit": {
+        "provider": "openai",
+        "model": "openai/gpt-5"
+      },
+      "qa": {
+        "provider": "openai",
+        "model": "openai/gpt-5"
+      }
+    }
+  }
+}</pre></body></html>

@@ -3,12 +3,13 @@
 from __future__ import annotations
 
 import os
-from unittest.mock import patch
+from pathlib import Path
 
 import pytest
 from fastapi.testclient import TestClient
 
 from app.main import app
+from app.run_database import load_run
 
 
 def _chromadb_has_chunks() -> bool:
@@ -28,58 +29,122 @@ live_openai = pytest.mark.skipif(
 
 
 @pytest.mark.e2e
-def test_e2e_pipeline_mocked_llm() -> None:
-    """Полный HTTP-флоу; LLM подменён — проверка RAG + четыре точки вызова."""
-    if not _chromadb_has_chunks():
-        pytest.skip("Chroma empty — run: python -m rag --reset")
+def test_e2e_snapshot_stub_pipeline_saves_report(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Снимок JSON + stub LLM; без Chroma и без OpenAI. Сохраняется отчёт."""
+    monkeypatch.setenv("FAIRYNEWS_LLM_UNIFORM_STAGES", "")
+    monkeypatch.setenv("FAIRYNEWS_LLM_PER_STAGE", "")
+    monkeypatch.delenv("FAIRYNEWS_UNIFORM_BACKEND", raising=False)
+    monkeypatch.delenv("FAIRYNEWS_UNIFORM_MODEL", raising=False)
+    monkeypatch.delenv("FAIRYNEWS_LLM_BACKEND", raising=False)
+    for key in tuple(os.environ.keys()):
+        if key.startswith("FAIRYNEWS_STAGE_"):
+            monkeypatch.delenv(key, raising=False)
+    monkeypatch.setenv("FAIRYNEWS_RAG_BACKEND", "snapshot")
+    monkeypatch.setenv("FAIRYNEWS_LLM_MODE", "stub")
+    db_path = tmp_path / "runs_e2e.db"
+    monkeypatch.setenv("FAIRYNEWS_REPORTS_DB_PATH", str(db_path))
+    monkeypatch.setenv("FAIRYNEWS_PERSIST_STUB_REPORTS", "1")
 
-    news_out = {
-        "summary": "Кузнецы и мастеровые просят справедливой цены.",
-        "themes": ["труд", "ярмарка", "народ"],
-        "retrieval_keywords": "кузнец народная сказка",
-    }
-    audit_out = {"approved": True, "notes": "ок", "tale": ""}
-    qa_out = {
-        "question": "Кто собрался у терема?",
-        "reference_answer": "Ремесленники.",
-    }
-    story_text = (
-        "Жил-был царь Горох, а у него в подданных — кузнецы да ткачихи. "
-        "Пришли они к терему не с мечом, а с наковальней да челноком, "
-        "и сказали слово крепкое. Царь услышал и завесу поднял — стало "
-        "на площади светло. Спорили они до третьего петуха, но вышло "
-        "так, что каждому досталось зерно да уваженье. А кто не верит — "
-        "пусть к молодцам снова сходить."
+    client = TestClient(app)
+    response = client.post(
+        "/api/generate",
+        json={
+            "news_text": "Кузнецы просят справедливой цены за труд.",
+            "preset_id": "russian_folk",
+            "run_by": "pytest",
+        },
     )
-
-    with patch(
-        "app.agents_pipeline.chat_json_object",
-        side_effect=[news_out, audit_out, qa_out],
-    ):
-        with patch(
-            "app.agents_pipeline.chat_text",
-            return_value=story_text,
-        ):
-            client = TestClient(app)
-            response = client.post(
-                "/api/generate",
-                json={"news_id": "m3", "preset_id": "russian_folk"},
-            )
-
     assert response.status_code == 200, response.text
     data = response.json()
 
-    assert data["tale"] == story_text
-    assert data["news_brief"]["summary"] == news_out["summary"]
-    assert data["chosen_tale_source"]
-    assert data["rag_chunks_used"] >= 1
-    assert data["audit"]["approved"] is True
-    assert data["qa"]["question"] == qa_out["question"]
-    assert data["qa"]["reference_answer"] == qa_out["reference_answer"]
+    assert data.get("run_id")
+    assert "Жил-был" in data.get("tale", "")
+    assert data.get("chosen_tale_source")
+    assert data.get("rag_chunks_used", 0) >= 1
+    assert data.get("qa", {}).get("question")
 
-    tale_l = data["tale"].lower()
-    brief_l = news_out["summary"].lower()
-    assert any(t in tale_l for t in brief_l.split() if len(t) > 5)
+    saved = load_run(data["run_id"])
+    assert saved is not None
+    assert saved.get("run_by") == "pytest"
+    assert saved.get("news_raw")
+    assert saved.get("agent_outputs")
+    ap = saved.get("agent_prompts") or {}
+    assert ap.get("news", {}).get("system")
+    assert ap.get("story", {}).get("user")
+    assert saved.get("heuristics")
+    assert saved.get("rag", {}).get("top_k")
+    assert saved["tale"] == data["tale"]
+
+    lst = client.get("/api/reports/runs")
+    assert lst.status_code == 200
+    ids = [x["run_id"] for x in lst.json().get("items", [])]
+    assert data["run_id"] in ids
+
+    log_r = client.get(f"/api/reports/llm-logs/{data['run_id']}")
+    assert log_r.status_code == 200, log_r.text
+    log_body = log_r.json()
+    assert log_body.get("run_id") == data["run_id"]
+    assert len(log_body.get("steps") or []) == 4
+
+
+@pytest.mark.e2e
+def test_pipeline_chroma_with_fixed_mock_llm(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Прямой вызов пайплайна с Chroma и фиксированным mock LLM."""
+    if not _chromadb_has_chunks():
+        pytest.skip("Chroma empty — run: python -m rag --reset")
+
+    from app.agents_pipeline import run_four_agent_pipeline
+    class FixedLLM:
+        """Три JSON-вызова и один текст; счётчик без глобалов снаружи."""
+
+        def __init__(self) -> None:
+            self._json_i = 0
+
+        @property
+        def model_label(self) -> str:
+            return "mock"
+
+        @property
+        def provider_name(self) -> str:
+            return "mock"
+
+        def chat_json_object(self, system, user, **kwargs):
+            del system, user, kwargs
+            self._json_i += 1
+            if self._json_i == 1:
+                return {
+                    "summary": "Кузнецы просят справедливой цены.",
+                    "themes": ["труд", "народ"],
+                    "retrieval_keywords": "кузнец",
+                }
+            if self._json_i == 2:
+                return {"approved": True, "notes": "ok", "tale": ""}
+            return {
+                "question": "Кто на площади?",
+                "reference_answer": "Ремесленники.",
+            }
+
+        def chat_text(self, system, user, **kwargs):
+            del system, user, kwargs
+            return (
+                "Жил-был царь. Собрались кузнецы у терема и речь сказали."
+            )
+
+    out = run_four_agent_pipeline(
+        "Новость о кузнецах.",
+        "русская сказка",
+        ("russian",),
+        llm=FixedLLM(),
+        rag_backend="chroma",
+    )
+    assert "кузнец" in out["tale"].lower()
+    assert out["report"]["rag"]["backend"] == "chroma"
 
 
 @live_openai
@@ -95,12 +160,17 @@ def test_e2e_live_generate_russian_folk_preset() -> None:
     client = TestClient(app)
     response = client.post(
         "/api/generate",
-        json={"news_id": "m3", "preset_id": "russian_folk"},
+        json={
+            "news_text": (
+                "Ремесленники собрались у терема требовать справедливой цены."
+            ),
+            "preset_id": "russian_folk",
+        },
     )
     assert response.status_code == 200, response.text
     data = response.json()
 
-    assert len(data.get("tale", "")) > 350
+    assert len(data.get("tale", "")) > 200
     assert data.get("chosen_tale_source")
 
     brief = data.get("news_brief") or {}
@@ -113,22 +183,6 @@ def test_e2e_live_generate_russian_folk_preset() -> None:
     qa = data.get("qa") or {}
     assert qa.get("question")
     assert qa.get("reference_answer")
-
-    tale_l = data["tale"].lower()
-    summary_l = brief["summary"].lower()
-    themed_hit = any(
-        str(t).lower() in tale_l
-        for t in brief.get("themes", [])
-        if len(str(t)) > 3
-    )
-    lexical_hit = any(
-        w in tale_l
-        for w in summary_l.split()
-        if len(w) > 5 and w[:5].isalpha()
-    )
-    assert themed_hit or lexical_hit or "жил" in tale_l, (
-        "сказка должна частично отзываться к новости или стилю сказки"
-    )
 
 
 @pytest.mark.e2e

@@ -209,3 +209,8 @@ __marimo__/
 # RAG / local vector store (large; regenerated)
 data/chroma_fairy_tales/
 data/rag_pipeline_state.json
+
+# Run reports (regenerated locally; keep directory via .gitkeep)
+data/reports/runs/*.json
+data/reports/runs.db
+data/reports/runs.db-*

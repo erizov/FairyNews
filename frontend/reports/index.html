@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FairyNews — отчёты</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,600&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/collage.css">
+  <style>
+    :root {
+      --bg: #f0e8dc;
+      --card: #fffefb;
+      --accent: #5c3619;
+      --muted: #5a534a;
+      --border: #c9b39a;
+      --shadow: 0 4px 24px rgba(44, 36, 28, 0.08);
+      font-family: "Source Sans 3", system-ui, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(165deg, var(--bg) 0%, #e4d8c8 100%);
+      color: #1f1812;
+    }
+    .top {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    .top-inner {
+      max-width: 58rem;
+      margin: 0 auto;
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .top-inner h1 {
+      margin: 0;
+      font-family: Literata, Georgia, serif;
+      font-size: 1.2rem;
+      color: var(--accent);
+    }
+    .nav a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-left: 1rem;
+    }
+    .nav a:hover { text-decoration: underline; }
+    .wrap {
+      max-width: 58rem;
+      margin: 0 auto;
+      padding: 1.5rem 1rem 3rem;
+    }
+    .panel {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 1.35rem;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(201, 179, 154, 0.45);
+    }
+    .muted { color: var(--muted); font-size: 0.9rem; line-height: 1.45; }
+    .muted code {
+      font-size: 0.82rem;
+      background: #f3ece4;
+      padding: 0.12rem 0.35rem;
+      border-radius: 4px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 1rem;
+      font-size: 0.88rem;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 0.5rem 0.65rem;
+      text-align: left;
+    }
+    th {
+      background: #f3ebe0;
+      font-weight: 600;
+      color: #3d342a;
+    }
+    tbody tr:hover { background: #faf7f2; }
+    a { color: var(--accent); font-weight: 600; }
+    #err {
+      margin-top: 0.75rem;
+      padding: 0.75rem;
+      background: #fce8ec;
+      color: #7a1f33;
+      border-radius: 8px;
+      border: 1px solid #f0c4cd;
+    }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="top-inner">
+      <h1>Отчёты по прогонам</h1>
+      <nav class="nav">
+        <a href="/">Генерация</a>
+        <a href="index.html">Сводка</a>
+      </nav>
+    </div>
+  </header>
+  <div class="collage-strip wide" aria-hidden="true">
+    <div id="collageMountReports"></div>
+    <p class="collage-caption" hidden>Равнозначные кадры коллажа: мотивы лент и
+      народной сказки (декор страницы).</p>
+  </div>
+  <div class="wrap">
+    <div class="panel">
+      <p class="muted">Данные: <code>GET /api/reports/runs</code>. Строка ведёт
+        на детальный просмотр.</p>
+      <div id="err" class="muted" hidden></div>
+      <table id="tbl" hidden>
+        <thead>
+          <tr>
+            <th>Дата/время (UTC)</th>
+            <th>Кто</th>
+            <th>сек</th>
+            <th>Новость (~30 сл.)</th>
+            <th>Сказка (~30 сл.)</th>
+            <th>id</th>
+            <th>LLM журнал</th>
+            <th>RAG</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+      <p id="empty" class="muted" hidden>Нет сохранённых прогонов. Сгенерируйте
+        сказку на главной странице.</p>
+    </div>
+  </div>
+  <script>
+(function () {
+  fetch("/api/reports/runs")
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      var items = data.items || [];
+      if (!items.length) {
+        document.getElementById("empty").hidden = false;
+        return;
+      }
+      document.getElementById("tbl").hidden = false;
+      var tb = document.getElementById("tbody");
+      function esc(s) {
+        if (s == null) { return ""; }
+        return String(s)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+      items.forEach(function (row) {
+        var tr = document.createElement("tr");
+        var link = "detail.html?id=" + encodeURIComponent(row.run_id);
+        var dur = row.duration_sec != null ? row.duration_sec : "";
+        var idCell = "<a href=\"" + link + "\">"
+          + esc(row.run_id) + "</a>";
+        var llmHref = row.llm_log_url ||
+          ("llm-log.html?id=" + encodeURIComponent(row.run_id));
+        var llmCell = "<a href=\"" + esc(llmHref) + "\">trace</a>";
+        tr.innerHTML =
+          "<td>" + esc(row.created_at || "") + "</td>" +
+          "<td>" + esc(row.run_by || "") + "</td>" +
+          "<td>" + esc(dur) + "</td>" +
+          "<td title=\"" + esc(row.news_preview || "") + "\">"
+          + esc(row.news_preview || "") + "</td>" +
+          "<td title=\"" + esc(row.tale_preview || "") + "\">"
+          + esc(row.tale_preview || "") + "</td>" +
+          "<td>" + idCell + "</td>" +
+          "<td>" + llmCell + "</td>" +
+          "<td>" + esc(row.rag_backend || "") + "</td>";
+        tb.appendChild(tr);
+      });
+    })
+    .catch(function () {
+      var e = document.getElementById("err");
+      e.hidden = false;
+      e.textContent =
+        "Не удалось загрузить список. Проверьте, что сервер запущен и доступен /api/reports/runs.";
+    });
+})();
+  </script>
+  <script src="/static/collage.js"></script>
+  <script>
+    window.fairyNewsMountCollage("collageMountReports");
+  </script>
+</body>
+</html>

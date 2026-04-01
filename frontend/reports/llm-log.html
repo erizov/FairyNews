@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FairyNews — журнал LLM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,600&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/collage.css">
+  <style>
+    :root {
+      --bg: #f0e8dc;
+      --card: #fffefb;
+      --accent: #5c3619;
+      --muted: #5a534a;
+      --border: #c9b39a;
+      --shadow: 0 4px 24px rgba(44, 36, 28, 0.08);
+      font-family: "Source Sans 3", system-ui, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(165deg, var(--bg) 0%, #e4d8c8 100%);
+      color: #1f1812;
+    }
+    .top {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    .top-inner {
+      max-width: 56rem;
+      margin: 0 auto;
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .nav a {
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-left: 1rem;
+      text-decoration: none;
+    }
+    .nav a:hover { text-decoration: underline; }
+    .wrap {
+      max-width: 56rem;
+      margin: 0 auto;
+      padding: 1.5rem 1rem 3rem;
+    }
+    .panel {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 1.35rem;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(201, 179, 154, 0.45);
+    }
+    h1 {
+      font-family: Literata, Georgia, serif;
+      font-size: 1.25rem;
+      color: var(--accent);
+      margin: 0 0 0.5rem;
+    }
+    .muted { color: var(--muted); font-size: 0.9rem; line-height: 1.45; }
+    pre.json {
+      white-space: pre-wrap;
+      background: #f8f4ec;
+      padding: 0.75rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-size: 0.78rem;
+      line-height: 1.4;
+      max-height: 22rem;
+      overflow: auto;
+      margin: 0.35rem 0 1rem;
+      word-break: break-word;
+    }
+    h2.step {
+      font-family: Literata, Georgia, serif;
+      font-size: 1rem;
+      color: var(--accent);
+      margin: 1rem 0 0.25rem;
+      padding-bottom: 0.2rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .subcap { font-size: 0.82rem; color: var(--muted); margin: 0.2rem 0; }
+    #err {
+      padding: 0.75rem;
+      background: #fce8ec;
+      color: #7a1f33;
+      border-radius: 8px;
+      border: 1px solid #f0c4cd;
+    }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="top-inner">
+      <span style="font-family:Literata,serif;font-weight:600;color:var(--accent);">
+        FairyNews · LLM trace</span>
+      <nav class="nav">
+        <a href="/">Генерация</a>
+        <a href="index.html">Отчёты</a>
+      </nav>
+    </div>
+  </header>
+  <div class="collage-strip wide" aria-hidden="true">
+    <div id="collageMountLlm"></div>
+    <p class="collage-caption" hidden>Коллаж: декор страницы.</p>
+  </div>
+  <div class="wrap">
+    <div class="panel">
+      <h1 id="title">Журнал запросов к LLM</h1>
+      <p id="err" class="muted" hidden></p>
+      <div id="main" hidden>
+        <p class="muted"><span id="meta"></span></p>
+        <p class="muted">На сервере хранятся только <strong>последние 5</strong>
+          журналов прогонов. API: <code>GET /api/reports/llm-logs/{run_id}</code>.</p>
+        <p class="muted"><a id="backDetail" href="#">← К отчёту прогона</a></p>
+        <div id="steps"></div>
+      </div>
+    </div>
+  </div>
+  <script>
+(function () {
+  var params = new URLSearchParams(window.location.search);
+  var id = params.get("id");
+  var errEl = document.getElementById("err");
+  var detailA = document.getElementById("backDetail");
+  if (id) {
+    detailA.href = "detail.html?id=" + encodeURIComponent(id);
+  }
+  if (!id) {
+    errEl.hidden = false;
+    errEl.textContent = "Нет параметра id в URL.";
+    return;
+  }
+  fetch("/api/reports/llm-logs/" + encodeURIComponent(id))
+    .then(function (r) {
+      if (r.status === 404) {
+        throw new Error("404");
+      }
+      if (!r.ok) { throw new Error(r.statusText); }
+      return r.json();
+    })
+    .then(function (d) {
+      document.getElementById("main").hidden = false;
+      document.getElementById("title").textContent = "Журнал LLM · " + d.run_id;
+      document.getElementById("meta").textContent =
+        "Создан: " + (d.created_at || "—") + " · шагов: "
+        + ((d.steps || []).length);
+      var host = document.getElementById("steps");
+      (d.steps || []).forEach(function (step, idx) {
+        var h = document.createElement("h2");
+        h.className = "step";
+        h.textContent = (idx + 1) + ". " + (step.step || "?")
+          + " · " + (step.call || "");
+        host.appendChild(h);
+        var rq = document.createElement("p");
+        rq.className = "subcap";
+        rq.textContent = "Запрос (request)";
+        host.appendChild(rq);
+        var pr = document.createElement("pre");
+        pr.className = "json";
+        pr.textContent = JSON.stringify(step.request || {}, null, 2);
+        host.appendChild(pr);
+        var rs = document.createElement("p");
+        rs.className = "subcap";
+        rs.textContent = "Ответ (response)";
+        host.appendChild(rs);
+        var pr2 = document.createElement("pre");
+        pr2.className = "json";
+        pr2.textContent = JSON.stringify(step.response != null
+          ? step.response
+          : {}, null, 2);
+        host.appendChild(pr2);
+      });
+    })
+    .catch(function (e) {
+      errEl.hidden = false;
+      errEl.textContent = e && e.message === "404"
+        ? "Журнал не найден (нет в последних 5 или неверный id)."
+        : "Ошибка загрузки или сеть.";
+    });
+})();
+  </script>
+  <script src="/static/collage.js"></script>
+  <script>
+    window.fairyNewsMountCollage("collageMountLlm");
+  </script>
+</body>
+</html>

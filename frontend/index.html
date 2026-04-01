@@ -4,135 +4,361 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>FairyNews — MVP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/collage.css">
   <style>
     :root {
-      font-family: Georgia, "Times New Roman", serif;
-      --bg: #f6f0e6;
-      --card: #fffef9;
-      --accent: #6b4226;
-      --muted: #5c5348;
+      --bg: #f0e8dc;
+      --bg-deep: #e4d8c8;
+      --card: #fffefb;
+      --accent: #5c3619;
+      --accent-hover: #7a4a24;
+      --muted: #5a534a;
+      --border: #c9b39a;
+      --err-bg: #fce8ec;
+      --err-fg: #7a1f33;
+      --radius: 12px;
+      --shadow: 0 4px 24px rgba(44, 36, 28, 0.08);
+      font-family: "Source Sans 3", system-ui, sans-serif;
     }
+    * { box-sizing: border-box; }
     body {
       margin: 0;
       min-height: 100vh;
-      background: var(--bg);
-      color: #1a1410;
+      background: linear-gradient(165deg, var(--bg) 0%, var(--bg-deep) 100%);
+      color: #1f1812;
     }
-    main {
-      max-width: 40rem;
+    .top {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    .top-inner {
+      max-width: 44rem;
       margin: 0 auto;
-      padding: 1.5rem 1rem 3rem;
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
     }
-    h1 {
-      font-size: 1.35rem;
+    .top-inner h1 {
+      margin: 0;
+      font-family: Literata, Georgia, serif;
+      font-size: 1.2rem;
+      font-weight: 600;
       color: var(--accent);
-      margin-bottom: 0.25rem;
+    }
+    .nav a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-left: 1rem;
+    }
+    .nav a:hover { color: var(--accent-hover); text-decoration: underline; }
+    main {
+      max-width: 44rem;
+      margin: 0 auto;
+      padding: 1.5rem 1rem 3.5rem;
     }
     .sub {
       color: var(--muted);
-      font-size: 0.9rem;
-      margin-bottom: 1.5rem;
+      font-size: 0.92rem;
+      line-height: 1.45;
+      margin: 0 0 1rem;
     }
     section.page {
       display: none;
       background: var(--card);
-      border-radius: 8px;
-      padding: 1.25rem;
-      box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+      border-radius: var(--radius);
+      padding: 1.35rem 1.35rem 1.6rem;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(201, 179, 154, 0.45);
     }
     section.page.active { display: block; }
-    label { display: block; margin: 0.75rem 0 0.25rem; font-size: 0.9rem; }
+    .step {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 0 0.35rem;
+    }
+    label {
+      display: block;
+      margin: 0.85rem 0 0.35rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #3d342a;
+    }
     textarea, select {
       width: 100%;
-      box-sizing: border-box;
       font: inherit;
-      padding: 0.5rem;
-      border: 1px solid #c9b8a4;
-      border-radius: 4px;
-      background: #fff;
-    }
-    textarea { min-height: 7rem; resize: vertical; }
-    .news-list { list-style: none; padding: 0; margin: 0; }
-    .news-list li {
-      margin: 0.5rem 0;
+      font-size: 0.95rem;
       padding: 0.6rem 0.75rem;
-      border: 1px solid #d8ccb8;
-      border-radius: 6px;
-      cursor: pointer;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #fff;
+      transition: border-color 0.15s, box-shadow 0.15s;
     }
-    .news-list li.selected {
+    textarea:focus, select:focus {
+      outline: none;
       border-color: var(--accent);
-      background: #faf5ed;
+      box-shadow: 0 0 0 3px rgba(92, 54, 25, 0.12);
     }
-    .news-list .title { font-weight: bold; }
-    .news-list .meta { font-size: 0.8rem; color: var(--muted); }
+    textarea { min-height: 8rem; resize: vertical; font-family: inherit; }
+    .news-scroll-wrap {
+      max-height: min(70vh, 32rem);
+      overflow-y: auto;
+      padding-right: 0.35rem;
+      margin: 0.25rem 0 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #fdfcfa;
+    }
+    .news-list { list-style: none; padding: 0.5rem; margin: 0; }
+    .news-list li {
+      margin: 0 0 0.55rem;
+      padding: 0;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--card);
+      transition: border-color 0.15s, box-shadow 0.15s;
+      overflow: visible;
+      position: relative;
+    }
+    .news-list li:hover,
+    .news-list li:focus-within {
+      z-index: 5;
+    }
+    .news-list li:last-child { margin-bottom: 0; }
+    .news-list li.checked {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(92, 54, 25, 0.35);
+    }
+    .news-row {
+      display: flex;
+      gap: 0.65rem;
+      align-items: flex-start;
+      padding: 0.65rem 0.75rem;
+      cursor: pointer;
+      margin: 0;
+      position: relative;
+    }
+    .news-row input {
+      margin-top: 0.35rem;
+      width: 1rem;
+      height: 1rem;
+      accent-color: var(--accent);
+      flex-shrink: 0;
+    }
+    .news-row-body { min-width: 0; flex: 1; }
+    .news-list .title {
+      font-weight: 600;
+      font-family: Literata, Georgia, serif;
+      font-size: 0.98rem;
+    }
+    .news-list .meta { font-size: 0.78rem; color: var(--muted); margin-top: 0.15rem; }
+    .news-preview {
+      margin-top: 0.4rem;
+      font-size: 0.86rem;
+      line-height: 1.45;
+      color: #4a4338;
+      padding: 0.15rem 0.2rem 0.15rem 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
+    }
+    .news-tip {
+      display: none;
+      position: absolute;
+      left: 1.55rem;
+      right: 0.55rem;
+      top: calc(100% - 2px);
+      margin: 0;
+      min-height: calc(1.35em * 8);
+      max-height: calc(1.35em * 24);
+      overflow-y: auto;
+      padding: 0.55rem 0.65rem;
+      font-size: 0.82rem;
+      line-height: 1.35;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #2e2920;
+      background: #fffefb;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      box-shadow: 0 8px 28px rgba(44, 36, 28, 0.18);
+      z-index: 25;
+    }
+    .news-row:hover .news-tip,
+    .news-row:focus-within .news-tip {
+      display: block;
+    }
+    .selection-hint {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin: 0 0 0.5rem;
+    }
+    .selection-hint strong { color: var(--accent); }
+    .actions { margin-top: 1.15rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
     button {
-      margin-top: 1rem;
-      padding: 0.55rem 1.1rem;
+      padding: 0.58rem 1.2rem;
       font: inherit;
+      font-weight: 600;
+      font-size: 0.92rem;
       background: var(--accent);
       color: #fff;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
+      transition: background 0.15s, transform 0.05s;
     }
-    button.secondary {
-      background: #8a7968;
-      margin-right: 0.5rem;
+    button:hover:not(:disabled) { background: var(--accent-hover); }
+    button:active:not(:disabled) { transform: scale(0.98); }
+    button.secondary { background: #7d6f62; }
+    button.secondary:hover:not(:disabled) { background: #635850; }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    button .spinner {
+      display: none;
+      width: 1em;
+      height: 1em;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-right: 0.4rem;
     }
-    button:disabled { opacity: 0.45; cursor: not-allowed; }
+    button.loading .spinner { display: inline-block; }
+    button.loading .btn-label { opacity: 0.92; }
+    @keyframes spin { to { transform: rotate(360deg); } }
     .tale-out {
       white-space: pre-wrap;
-      line-height: 1.5;
+      line-height: 1.65;
       margin-top: 0.5rem;
+      font-family: Literata, Georgia, serif;
+      font-size: 1.02rem;
     }
-    .err { color: #8b2942; font-size: 0.9rem; margin-top: 0.5rem; }
-    .step { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.04em; }
+    .err {
+      color: var(--err-fg);
+      font-size: 0.9rem;
+      margin-top: 0.65rem;
+      padding: 0.75rem 0.9rem;
+      background: var(--err-bg);
+      border-radius: 8px;
+      border: 1px solid #f0c4cd;
+      line-height: 1.4;
+    }
+    .meta-box {
+      font-size: 0.88rem;
+      color: var(--muted);
+      padding: 0.65rem 0.85rem;
+      background: #f7f3ec;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      border: 1px solid var(--border);
+    }
+    .meta-box a { color: var(--accent); font-weight: 600; }
+    h2.result-h {
+      font-family: Literata, Georgia, serif;
+      font-size: 1.05rem;
+      color: var(--accent);
+      margin: 1.35rem 0 0.4rem;
+    }
   </style>
 </head>
 <body>
+  <header class="top">
+    <div class="top-inner">
+      <h1>FairyNews</h1>
+      <nav class="nav">
+        <a href="/">Генерация</a>
+        <a href="/reports-ui/index.html">Отчёты</a>
+      </nav>
+    </div>
+  </header>
+  <div class="collage-strip" aria-hidden="true">
+    <div id="collageMount"></div>
+    <p class="collage-caption" hidden>Коллаж из равных кадров: общие мотивы
+      печати и фольклора (оформление, не иллюстрация к выбранным текстам).</p>
+  </div>
   <main>
-    <h1>Нейро-сказочник — MVP</h1>
-    <p class="sub">Шаг 1–3: новость → пресет RAG → сказка (4 агента: новости,
-      генерация, аудит, вопрос–ответ).</p>
+    <p class="sub" hidden>Данные с сервера приходят как JSON по контрактам
+      OpenAPI (модели Pydantic). Поток: новость → пресет RAG → сказка; четыре
+      агента: новости, генерация, аудит, вопрос–ответ.</p>
 
     <section id="page1" class="page active" aria-label="Шаг 1">
-      <p class="step">ШАГ 1 ИЗ 3 — НОВОСТЬ</p>
-      <p>Выберите мок-новость или вставьте свою выжимку.</p>
-      <ul id="newsList" class="news-list"></ul>
-      <label for="customNews">Свой текст (если заполнен — используется он)</label>
+      <p class="step">Шаг 1 из 3 — новость</p>
+      <p class="sub" style="margin-bottom:0.5rem">Шесть свежих заголовков
+        (три английских и три русских источника RSS, язык оригинала) и своё
+        поле текста ниже. Отметьте до трёх карточек или только свой текст.</p>
+      <p id="selectionHint" class="selection-hint" aria-live="polite">
+        Отмечено: <strong>0</strong> из 3
+      </p>
+      <div class="news-scroll-wrap">
+        <ul id="newsList" class="news-list"></ul>
+      </div>
+      <label for="customNews">Свой текст (если заполнен — используется только
+        он, без отмеченных новостей)</label>
       <textarea id="customNews" placeholder="Заголовок и краткое содержание…"
         maxlength="8000"></textarea>
       <p id="err1" class="err" hidden></p>
-      <button type="button" id="toStep2">Далее</button>
+      <div class="actions">
+        <button type="button" id="toStep2">Далее</button>
+      </div>
     </section>
 
     <section id="page2" class="page" aria-label="Шаг 2">
-      <p class="step">ШАГ 2 ИЗ 3 — СКАЗКА</p>
+      <p class="step">Шаг 2 из 3 — пресет</p>
       <label for="presetSelect">Опора для поиска похожих сюжетов (RAG)</label>
       <select id="presetSelect"></select>
-      <p id="presetDesc" class="sub" style="margin-top:0.5rem"></p>
+      <p id="presetDesc" class="sub" style="margin-top:0.65rem"></p>
       <p id="err2" class="err" hidden></p>
-      <button type="button" id="back2" class="secondary">Назад</button>
-      <button type="button" id="runGen">Сгенерировать</button>
+      <div class="actions">
+        <button type="button" id="back2" class="secondary">Назад</button>
+        <button type="button" id="runGen">
+          <span class="spinner" aria-hidden="true"></span>
+          <span class="btn-label">Сгенерировать</span>
+        </button>
+      </div>
     </section>
 
     <section id="page3" class="page" aria-label="Шаг 3">
-      <p class="step">ШАГ 3 ИЗ 3 — РЕЗУЛЬТАТ</p>
+      <p class="step">Шаг 3 из 3 — результат</p>
       <p id="err3" class="err" hidden></p>
-      <div id="metaOut" class="sub" style="margin-bottom:0.75rem"></div>
+      <div id="metaOut" class="meta-box"></div>
       <div id="tale" class="tale-out"></div>
-      <h2 style="font-size:1rem;margin-top:1.25rem;color:var(--accent);">
-        Вопрос по сказке
-      </h2>
-      <div id="qaQ" class="tale-out"></div>
-      <div id="qaA" class="tale-out" style="color:var(--muted)"></div>
-      <button type="button" id="back3" class="secondary">Назад к выбору сказки</button>
+      <h2 class="result-h">Вопрос по сказке</h2>
+      <div id="qaQ" class="tale-out" style="font-size:0.98rem"></div>
+      <div id="qaA" class="tale-out" style="color:var(--muted);font-size:0.95rem"></div>
+      <div class="actions">
+        <button type="button" id="back3" class="secondary">Назад к пресету</button>
+      </div>
     </section>
   </main>
   <script>
 (function () {
-  const state = { newsId: null, presetId: "default" };
+  const SEL_KEY = "fairynews_selected_ids";
+  const state = { selectedIds: [], presetId: "default", maxPick: 3 };
+
+  function apiDetail(detail) {
+    if (detail == null) return "";
+    if (typeof detail === "string") return detail;
+    if (Array.isArray(detail)) {
+      return detail.map(function (x) {
+        return (x && x.msg) ? x.msg : JSON.stringify(x);
+      }).join("; ");
+    }
+    return String(detail);
+  }
 
   function showPage(n) {
     document.querySelectorAll("section.page").forEach(function (el) {
@@ -147,30 +373,108 @@
     else { el.textContent = ""; el.hidden = true; }
   }
 
+  function updateSelectionHint() {
+    const n = state.selectedIds.length;
+    const el = document.getElementById("selectionHint");
+    el.innerHTML = "Отмечено: <strong>" + n + "</strong> из "
+      + state.maxPick;
+  }
+
+  function syncLiCheckedClass() {
+    const ul = document.getElementById("newsList");
+    ul.querySelectorAll("li").forEach(function (li) {
+      const id = li.dataset.id;
+      const on = state.selectedIds.indexOf(id) >= 0;
+      li.classList.toggle("checked", on);
+    });
+  }
+
   async function loadNews() {
     const r = await fetch("/api/news");
     const data = await r.json();
     const ul = document.getElementById("newsList");
     ul.innerHTML = "";
-    data.items.forEach(function (item) {
+    state.selectedIds = [];
+    (data.items || []).forEach(function (item) {
       const li = document.createElement("li");
       li.dataset.id = item.id;
-      li.innerHTML =
-        '<div class="title"></div><div class="meta"></div>';
-      li.querySelector(".title").textContent = item.title;
-      li.querySelector(".meta").textContent = item.date;
-      li.addEventListener("click", function () {
-        ul.querySelectorAll("li").forEach(function (x) {
-          x.classList.remove("selected");
-        });
-        li.classList.add("selected");
-        state.newsId = item.id;
+      const lbl = document.createElement("label");
+      lbl.className = "news-row";
+      const cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.setAttribute("aria-label", "Выбрать: " + item.title);
+      const body = document.createElement("div");
+      body.className = "news-row-body";
+      const t = document.createElement("div");
+      t.className = "title";
+      t.textContent = item.title;
+      const m = document.createElement("div");
+      m.className = "meta";
+      var metaParts = [];
+      if (item.source) { metaParts.push(item.source); }
+      if (item.lang) { metaParts.push(item.lang); }
+      if (item.date) { metaParts.push(item.date); }
+      m.textContent = metaParts.join(" · ");
+      const prev = document.createElement("div");
+      prev.className = "news-preview";
+      prev.textContent = item.summary || "";
+      body.appendChild(t);
+      body.appendChild(m);
+      body.appendChild(prev);
+      const tip = document.createElement("div");
+      tip.className = "news-tip";
+      tip.setAttribute("role", "tooltip");
+      tip.textContent = item.summary || "";
+      lbl.appendChild(cb);
+      lbl.appendChild(body);
+      lbl.appendChild(tip);
+      li.appendChild(lbl);
+      cb.addEventListener("change", function () {
+        const id = item.id;
+        if (cb.checked) {
+          if (state.selectedIds.length >= state.maxPick) {
+            cb.checked = false;
+            showErr(
+              "err1",
+              "Можно отметить не более " + state.maxPick + " новостей.",
+            );
+            return;
+          }
+          state.selectedIds.push(id);
+          showErr("err1", "");
+        } else {
+          state.selectedIds = state.selectedIds.filter(function (x) {
+            return x !== id;
+          });
+        }
+        syncLiCheckedClass();
+        updateSelectionHint();
       });
       ul.appendChild(li);
     });
-    if (data.items.length) {
-      ul.querySelector("li").click();
-    }
+    try {
+      const raw = sessionStorage.getItem(SEL_KEY);
+      if (raw) {
+        const want = JSON.parse(raw);
+        const valid = new Set((data.items || []).map(function (it) {
+          return it.id;
+        }));
+        if (Array.isArray(want) && want.length) {
+          state.selectedIds = want.filter(function (id) {
+            return valid.has(id);
+          }).slice(0, state.maxPick);
+          ul.querySelectorAll("li").forEach(function (li) {
+            var id = li.dataset.id;
+            var cb = li.querySelector("input[type=checkbox]");
+            if (cb && state.selectedIds.indexOf(id) >= 0) {
+              cb.checked = true;
+            }
+          });
+          syncLiCheckedClass();
+        }
+      }
+    } catch (e) { /* ignore */ }
+    updateSelectionHint();
   }
 
   async function loadPresets() {
@@ -197,10 +501,13 @@
   document.getElementById("toStep2").addEventListener("click", function () {
     showErr("err1", "");
     const custom = document.getElementById("customNews").value.trim();
-    if (!custom && !state.newsId) {
-      showErr("err1", "Выберите новость или введите текст.");
+    if (!custom && state.selectedIds.length === 0) {
+      showErr("err1", "Отметьте одну–три новости или введите свой текст.");
       return;
     }
+    try {
+      sessionStorage.setItem(SEL_KEY, JSON.stringify(state.selectedIds));
+    } catch (e) { /* ignore */ }
     showPage(2);
   });
 
@@ -216,11 +523,33 @@
     showErr("err2", "");
     const btn = document.getElementById("runGen");
     btn.disabled = true;
+    btn.classList.add("loading");
     const custom = document.getElementById("customNews").value.trim();
     const presetId = document.getElementById("presetSelect").value;
+    let ids = state.selectedIds.slice();
+    if (!custom && ids.length === 0) {
+      try {
+        const raw = sessionStorage.getItem(SEL_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed)) { ids = parsed; }
+        }
+      } catch (e) { /* ignore */ }
+    }
     const body = { preset_id: presetId };
-    if (custom) body.news_text = custom;
-    else body.news_id = state.newsId;
+    if (custom) {
+      body.news_text = custom;
+    } else if (ids.length === 1) {
+      /* Один id — news_id: работает и со старым API без поля news_ids */
+      body.news_id = ids[0];
+    } else if (ids.length > 1) {
+      body.news_ids = ids;
+    } else {
+      showErr("err2", "Нет текста новости. Вернитесь на шаг 1.");
+      btn.disabled = false;
+      btn.classList.remove("loading");
+      return;
+    }
 
     try {
       const r = await fetch("/api/generate", {
@@ -230,13 +559,14 @@
       });
       const data = await r.json().catch(function () { return {}; });
       if (!r.ok) {
-        showErr("err2", data.detail || r.statusText || "Ошибка");
+        const msg = apiDetail(data.detail) || r.statusText || "Ошибка";
+        showErr("err2", msg);
         return;
       }
       document.getElementById("tale").textContent = data.tale || "";
       var meta = "";
       if (data.chosen_tale_source) {
-        meta += "Опора RAG (источник): " + data.chosen_tale_source;
+        meta += "Опора RAG: " + data.chosen_tale_source;
       }
       if (data.rag_chunks_used) {
         meta += " · чанков: " + data.rag_chunks_used;
@@ -246,7 +576,23 @@
           + (data.audit.approved ? "ок" : "правки")
           + (data.audit.notes ? " — " + data.audit.notes : "");
       }
-      document.getElementById("metaOut").textContent = meta;
+      var mo = document.getElementById("metaOut");
+      mo.textContent = meta;
+      if (data.run_id) {
+        mo.appendChild(document.createElement("br"));
+        var a = document.createElement("a");
+        a.href = "/reports-ui/detail.html?id="
+          + encodeURIComponent(data.run_id);
+        a.textContent = "Открыть отчёт по прогону";
+        mo.appendChild(a);
+        mo.appendChild(document.createElement("br"));
+        var aLog = document.createElement("a");
+        aLog.href = data.llm_log_url || (
+          "/reports-ui/llm-log.html?id=" + encodeURIComponent(data.run_id)
+        );
+        aLog.textContent = "Журнал LLM (JSON по шагам)";
+        mo.appendChild(aLog);
+      }
       document.getElementById("qaQ").textContent =
         (data.qa && data.qa.question) ? data.qa.question : "";
       document.getElementById("qaA").textContent =
@@ -259,12 +605,17 @@
       showErr("err2", "Сеть или сервер недоступны.");
     } finally {
       btn.disabled = false;
+      btn.classList.remove("loading");
     }
   });
 
   loadNews();
   loadPresets();
 })();
+  </script>
+  <script src="/static/collage.js"></script>
+  <script>
+    window.fairyNewsMountCollage("collageMount");
   </script>
 </body>
 </html>

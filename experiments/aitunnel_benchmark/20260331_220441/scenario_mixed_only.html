@@ -1,0 +1,35 @@
+<!DOCTYPE html><html lang='ru'><head><meta charset='utf-8'><title>Сценарий 1 — разные модели</title><style>body{font-family:system-ui;margin:1rem;}pre{background:#f4f4ea;padding:.75rem;font-size:11px;white-space:pre-wrap;}</style></head><body><h1>Сценарий 1 — разные модели</h1><pre>{
+  "timing": {
+    "rag_retrieve_sec": 6.0941,
+    "llm_news_sec": 10.15,
+    "llm_story_sec": 16.4921,
+    "llm_audit_sec": 25.8279,
+    "llm_qa_sec": 7.9316,
+    "llm_total_sec": 60.4016,
+    "pipeline_wall_sec": 68.7333
+  },
+  "llm": {
+    "per_stage": true,
+    "uniform_stages": false,
+    "provider": "mixed",
+    "model": "openai/gpt-4o",
+    "stages": {
+      "news": {
+        "provider": "openai",
+        "model": "openai/gpt-5"
+      },
+      "story": {
+        "provider": "openai",
+        "model": "openai/gpt-4o"
+      },
+      "audit": {
+        "provider": "openai",
+        "model": "openai/gpt-5"
+      },
+      "qa": {
+        "provider": "openai",
+        "model": "openai/gpt-5"
+      }
+    }
+  }
+}</pre></body></html>

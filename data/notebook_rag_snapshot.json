@@ -1,0 +1,106 @@
+{
+  "version": 1,
+  "description": "Мини-снимок чанков для ноутбука и e2e без Chroma; полный индекс — python -m rag --reset",
+  "chunks": [
+    {
+      "text": "В некотором царстве кузнецы собрались у терема просить милости царя: устали от невзгоды, да на ковёр не пускали.",
+      "metadata": {
+        "domain": "russian",
+        "source": "snapshot:folk_test_1",
+        "content_lang": "ru",
+        "work_note": "Тест-кузнецы",
+        "author": "test"
+      }
+    },
+    {
+      "text": "Лиса говорит петуху на дворе: пойдём поищем зерно в поле. Петух верит, а там уже невод приготовлен.",
+      "metadata": {
+        "domain": "russian",
+        "source": "snapshot:folk_test_2",
+        "content_lang": "ru",
+        "work_note": "Лиса и петух",
+        "author": "test"
+      }
+    },
+    {
+      "text": "Царевна пошла к Морозу Ивановичу за советом; мороз сказал: неси добро, не неси зла — отстанет беда.",
+      "metadata": {
+        "domain": "russian",
+        "source": "snapshot:folk_test_3",
+        "content_lang": "ru",
+        "work_note": "Мороз",
+        "author": "test"
+      }
+    },
+    {
+      "text": "Grimm: the youngest brother was thought a fool, yet he caught the golden bird when his brothers failed.",
+      "metadata": {
+        "domain": "european",
+        "source": "snapshot:grimm_demo",
+        "content_lang": "en",
+        "work_note": "Golden bird type",
+        "author": "demo"
+      }
+    },
+    {
+      "text": "Perrault: the cat in boots brought gifts to the king until his master won a castle and a princess.",
+      "metadata": {
+        "domain": "european",
+        "source": "snapshot:perrault_demo",
+        "content_lang": "en",
+        "work_note": "Puss in Boots",
+        "author": "demo"
+      }
+    },
+    {
+      "text": "Andersen: a tin soldier loved a paper dancer from one leg; the fire and the wind took them both to mystery.",
+      "metadata": {
+        "domain": "european",
+        "source": "snapshot:andersen_demo",
+        "content_lang": "en",
+        "work_note": "Steadfast tin soldier",
+        "author": "demo"
+      }
+    },
+    {
+      "text": "The vizier feared Scheherazade's tales, yet night after night she saved the city with a new story.",
+      "metadata": {
+        "domain": "oriental",
+        "source": "snapshot:arabian_demo",
+        "content_lang": "en",
+        "work_note": "Frame tale",
+        "author": "demo"
+      }
+    },
+    {
+      "text": "Народ с площади требует справедливости: не хлебом единым, но словом праведным суди нас, государь.",
+      "metadata": {
+        "domain": "russian",
+        "source": "snapshot:folk_test_justice",
+        "content_lang": "ru",
+        "work_note": "Справедливость",
+        "author": "test"
+      }
+    },
+    {
+      "text": "Ткачихи и кузнецы принесли царю свои орудия: не обидь ремесло, да в дворец войдёт мир.",
+      "metadata": {
+        "domain": "russian",
+        "source": "snapshot:folk_craft",
+        "content_lang": "ru",
+        "work_note": "Ремёсла",
+        "author": "demo"
+      }
+    },
+    {
+      "text": "Жар-птица светит перьями в саду царском; кто поймает её, тот разбогатеет, да горе схватит.",
+      "metadata": {
+        "domain": "russian",
+        "source": "snapshot:firebird_demo",
+        "content_lang": "ru",
+        "work_note": "Жар-птица",
+        "author": "demo"
+      }
+    }
+  ]
+}

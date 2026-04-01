@@ -95,6 +95,8 @@
 
 Запуск тестов: `python -m pytest tests/test_e2e_multi_agent.py -q` (нужен собранный индекс: `python -m rag --reset`). Живой вызов OpenAI: `RUN_LIVE_OPENAI_E2E=1` и `OPENAI_API_KEY` (если регион API поддерживается).
 
+**Скриншоты для сдачи:** перечень кадров (где видны ответы LLM по алгоритму: новость → RAG → сказка → аудит → вопрос–ответ) — в файле [etap3_screenshots_instruction.md](etap3_screenshots_instruction.md). Сами изображения вставляются в Word-отчёт или передаются отдельно по требованию курса.
+
 ---
 
 ## 5. Источники RAG и технология сбора данных (сводка для отчёта)
