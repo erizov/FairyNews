@@ -1,0 +1,234 @@
+<!DOCTYPE html><html lang="ru"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FairyNews — журнал LLM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,600&amp;family=Source+Sans+3:wght@400;600&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/collage.css">
+  <style>
+    :root {
+      --bg: #f0e8dc;
+      --card: #fffefb;
+      --accent: #5c3619;
+      --muted: #5a534a;
+      --border: #c9b39a;
+      --shadow: 0 4px 24px rgba(44, 36, 28, 0.08);
+      font-family: "Source Sans 3", system-ui, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(165deg, var(--bg) 0%, #e4d8c8 100%);
+      color: #1f1812;
+    }
+    .top {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    .top-inner {
+      max-width: 56rem;
+      margin: 0 auto;
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .nav a {
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-left: 1rem;
+      text-decoration: none;
+    }
+    .nav a:hover { text-decoration: underline; }
+    .wrap {
+      max-width: 56rem;
+      margin: 0 auto;
+      padding: 1.5rem 1rem 3rem;
+    }
+    .panel {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 1.35rem;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(201, 179, 154, 0.45);
+    }
+    h1 {
+      font-family: Literata, Georgia, serif;
+      font-size: 1.25rem;
+      color: var(--accent);
+      margin: 0 0 0.5rem;
+    }
+    .muted { color: var(--muted); font-size: 0.9rem; line-height: 1.45; }
+    pre.json {
+      white-space: pre-wrap;
+      background: #f8f4ec;
+      padding: 0.75rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-size: 0.78rem;
+      line-height: 1.4;
+      max-height: 22rem;
+      overflow: auto;
+      margin: 0.35rem 0 1rem;
+      word-break: break-word;
+    }
+    h2.step {
+      font-family: Literata, Georgia, serif;
+      font-size: 1rem;
+      color: var(--accent);
+      margin: 1rem 0 0.25rem;
+      padding-bottom: 0.2rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .subcap { font-size: 0.82rem; color: var(--muted); margin: 0.2rem 0; }
+    #err {
+      padding: 0.75rem;
+      background: #fce8ec;
+      color: #7a1f33;
+      border-radius: 8px;
+      border: 1px solid #f0c4cd;
+    }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="top-inner">
+      <span style="font-family:Literata,serif;font-weight:600;color:var(--accent);">
+        FairyNews · LLM trace</span>
+      <nav class="nav">
+        <a href="/">Генерация</a>
+        <a href="index.html">Отчёты</a>
+      </nav>
+    </div>
+  </header>
+  <div class="collage-strip wide" aria-hidden="true">
+    <div id="collageMountLlm" class="collage-grid"><div class="collage-cell"><img src="/static/collage/tile-00.jpg" alt="Стопка газет и бумаг, общий фон" loading="lazy" decoding="async" referrerpolicy="no-referrer" width="200" height="200"></div><div class="collage-cell"><img src="/static/collage/tile-01.jpg" alt="Текстура старой бумаги" loading="lazy" decoding="async" referrerpolicy="no-referrer" width="200" height="200"></div><div class="collage-cell"><img src="/static/collage/tile-02.jpg" alt="Городской пейзаж с высоты" loading="lazy" decoding="async" referrerpolicy="no-referrer" width="200" height="200"></div><div class="collage-cell"><img src="/static/collage/tile-03.jpg" alt="Звёздное небо (скопление Плеяд)" loading="lazy" decoding="async" referrerpolicy="no-referrer" width="200" height="200"></div><div class="collage-cell"><img src="/static/collage/tile-04.jpg" alt="Книга на подставке" loading="lazy" decoding="async" referrerpolicy="no-referrer" width="200" height="200"></div><div class="collage-cell"><img src="/static/collage/tile-05.jpg" alt="Старинные книги" loading="lazy" decoding="async" referrerpolicy="no-referrer" width="200" height="200"></div><div class="collage-cell"><img src="/static/collage/tile-06.jpg" alt="Лесная тропа" loading="lazy" decoding="async" referrerpolicy="no-referrer" width="200" height="200"></div><div class="collage-cell"><img src="/static/collage/tile-07.jpg" alt="Текстура дерева" loading="lazy" decoding="async" referrerpolicy="no-referrer" width="200" height="200"></div></div>
+    <p class="collage-caption" hidden="">Коллаж: декор страницы.</p>
+  </div>
+  <div class="wrap">
+    <div class="panel">
+      <h1 id="title">Журнал LLM · a6b78459-9f89-4bda-8188-e61ed93318d5</h1>
+      <p id="err" class="muted" hidden=""></p>
+      <div id="main">
+        <p class="muted"><span id="meta">Создан: 2026-04-02T00:11:16.915342Z · шагов: 4</span></p>
+        <p class="muted">На сервере хранятся только <strong>последние 5</strong>
+          журналов прогонов. API: <code>GET /api/reports/llm-logs/{run_id}</code>.</p>
+        <p class="muted"><a id="backDetail" href="detail.html?id=a6b78459-9f89-4bda-8188-e61ed93318d5">← К отчёту прогона</a></p>
+        <div id="steps"><h2 class="step">1. news · chat_json_object</h2><p class="subcap">Запрос (request)</p><pre class="json">{
+  "system": "Ты агент новостей. Сожми вход в JSON: summary (строка), themes (массив 2–5 строк), retrieval_keywords (одна строка для гибридного поиска по сказкам: по-русски, 4–12 ключевых слов и устойчивых сочетаний, характерных сказочные образы и предметы (царь, изба, дорога, справедливость и т.п.), без цитирования заголовка дословно).",
+  "user": "Новость:\nДачники, нанимающие нелегалов, заплатят за их депортацию: как\nправильно выбрать рабочих\nКстати, к ответственности за наем на работу нелегальных мигрантов\nмогут привлечь не только дачников. Например, вы пригласили няню для\nприсмотра за детьми или пожилыми родственниками, наняли плиточника или\nштукатура, чтобы сделать ремонт в квартире или частном доме — во всех\nэтих случаях вы становитесь работодателем и несете ответственность и за\nсебя, и за тех, кого пригласили.\nЮристы напоминают: формальный договор и копии документов не\nосвобождают от проверки законности пребывания наемных работников.\nЕсли у иностранца нет разрешения на труд, штрафы и расходы на выдворение\nмогут лечь на того, кто организовал работу и оплату. На практике это\nкасается не только крупных компаний, но и частных бригад на даче:\nот покоса травы до возведения теплицы.\nКак снизить риски. Спросите у кандидатов патент, разрешение или иной\nзаконный статус и сверьте данные через официальные сервисы. Храните\nсканы с согласия исполнителя, фиксируйте даты и объём работ. При\nсомнениях лучше обратиться в юрконсультацию или нанять бригаду через\nорганизацию с лицензией: тогда ответственность за кадры распределена\nявно. Помните: экономия на «серых» схемах часто оборачивается\nдесятикратными расходами и испорченным соседским миром.\nВ ведомствах подчеркивают: гражданская солидарность не отменяет\nконтроля за трудовым правом. Сказать работнику «ты сам знаешь, как\nустроиться» — недостаточно. Работодатель обязан удостовериться, что\nсмежные требования соблюдены, иначе споры перейдут в суды и\nадминистративные комиссии — без сказочного финала.\nИсточник: https://www.kp.ru/daily/27769.5/5228392/",
+  "temperature": 0.2,
+  "max_tokens": 1200
+}</pre><p class="subcap">Ответ (response)</p><pre class="json">{
+  "summary": "Дачники и частные работодатели несут ответственность за наем нелегальных мигрантов, включая штрафы и расходы на депортацию. Юристы советуют проверять документы работников и оформлять трудовые отношения правильно.",
+  "themes": [
+    "Ответственность работодателей",
+    "Наем нелегальных мигрантов",
+    "Правила трудового законодательства",
+    "Риски и последствия",
+    "Советы по легальному найму"
+  ],
+  "retrieval_keywords": "нелегалы, трудовые права, ответственность, документы, патент, депортация, работодатель, наем, юристы, законность"
+}</pre><h2 class="step">2. story · chat_text</h2><p class="subcap">Запрос (request)</p><pre class="json">{
+  "system": "Ты агент генерации сказки. Оригинальный русский текст в духе русской народной сказки; отрази идеи новости метафорически. Опора из RAG получена гибридным поиском (вектор + BM25, слияние рангов RRF), при необходимости второй проход с уточнённым запросом; фрагменты чанков сжаты по бюджету с приоритетом релевантных предложений в порядке чтения. Не копируй корпус дословно — мотивы и атмосфера, не формулировки источника.",
+  "user": "Новость (структурировано):\nДачники и частные работодатели несут ответственность за наем нелегальных мигрантов, включая штрафы и расходы на депортацию. Юристы советуют проверять документы работников и оформлять трудовые отношения правильно.\nТемы: Ответственность работодателей, Наем нелегальных мигрантов, Правила трудового законодательства, Риски и последствия, Советы по легальному найму\n\nОпорная сказка из RAG (источник: gutenberg:62509):\n[russian | gutenberg:62509 | en | Russian Folk-Tales — Afanasyev tradition (Gutenberg English)]\nRUSSIAN FOLK-TALES\n                               DEDICATED\n                                   TO\n                                 J. C.\n                           RUSSIAN FOLK-TALES\n                     (TRANSLATED FROM THE RUSSIAN)\n                      WITH INTRODUCTION AND NOTES\n                                   BY\n                        LEONARD A. MAGNUS, LL.B.\n    EDITOR AND TRANSLATOR OF “THE ARMAMENT OF IGOR (A.D. 1185)” ETC.\n                                 LONDON\n                KEGAN PAUL, TRENCH, TRUBNER &amp; CO., LTD.\n                     NEW YORK: E. P. DUTTON AND CO.\n                     _First Published October 1915_\n                   _Second Impression September 1916_\n------------------------------------------------------------------------\n                              INTRODUCTION\nAny editor of Slav folk-tales starts with great advantages. Russia is a\ncountry where arti\n\n---\n\n[russian | gutenberg:62509 | en | Russian Folk-Tales — Afanasyev tradition (Gutenberg English)]\nth from mystical sources of Mother Earth, and his\ngreat feat is the slaying of the Nightingale Robber. He is intermediate\nbetween the ‘_elder bogatyri_,’ the earth-born Tirans, and the human\nchampions of the legendary Court of Vladímir. He is always of popular\norigin and, as such, at variance with the semi-Scandinavian Court.\n_Iván Vasíl’evich._ The Tsar Iván Vasíl’evich is a very popular figure\nin the Russian ballads; there are two of this name: Iván III. 1462–1505,\nand Iván the Terrible, 1533–1584. Both were very energetic rulers who\nenlarged the domain of Moscow and curbed the power of the territorial\nnobility.\n              MIDNIGHT DANCE. GENERAL NOTES TO THIS STORY\nThe underworld is the home of magic. This charm, to be said by a soldier\ngoing to the wars, may be of interest.\n“Beneath the sea, the sea of Khvalýnsk [the Caspian], there stands a\nhouse of bronze, and in that house of b\n\n---\n\n[russian | gutenberg:62509 | en | Russian Folk-Tales — Afanasyev tradition (Gutenberg English)]\nle\n(the Khvalísi) of the eleventh and tenth centuries, who lived at the\nmouth of the Vólga in the Caspian. There is also a town called Khvalýnsk\non the Vólga in the province of Sarátov, above the city of Sarátov.\nThis particular story is probably a poetization of a geographical fact,\nbut in all the Russian folk-lore the river-gods play a very great part.\nThus Igor in The Word of Igor’s Armament, on the occasion of his defeat,\nhas a very beautiful colloquy with the Donéts. At least two of the\nheroes of the ballad cycle, Don Ivánovich and Sukhán Odikhmántevich, are\nin some aspects direct personifications of the rivers, whilst the\nriver-gods exercise a direct and vital influence over the fortunes of\nseveral others, such as Vasíli Buslávich and Dobrýnya Nikítich.\nMany Russian rivers have been rendered almost into human characters. The\nordinary speech is still of Mother Vólga. In the Nóvgorod\n\n---\n\n[russian | gutenberg:62509 | en | Russian Folk-Tales — Afanasyev tradition (Gutenberg English)]\ne], is also found in the Nóvgorod\nballads where Potán’ka the Lame is one of the boon companions of Vasíli\nBusláyevich.\n_Prískazka._ Many of the tales begin with a conventional introduction\nwhich has no relation to the story. Such an instance may be found in\n‘The Wolf and the Tailor.’ Also in ‘A Cure for Story-telling.’ And the\ntale of ‘The Dun Cow,’ ‘Princess to be Kissed at a Charge,’ etc.\n_The Realm of Stone._ For the episodes in this story of the kingdom\nturned to stone there seems strong evidence of adaptation or loan from\nthe Arabian Nights. Cf. The Tale of the Young King of the Black Islands,\nand the Tale of the City of Brass, but the development is very\ndifferent.\n_Sebezh._ A city in the Vitebsk Province bordering on Poland.\n_Shemyák._ The judge. Shemyákin Sud, the court of Shemyák, is a\nproverbial expression for arbitrary judgments. He was a prince of\nGalicia of the time of Vasíl\n\n---\n\n[russian | gutenberg:62509 | en | Russian Folk-Tales — Afanasyev tradition (Gutenberg English)]\ns an honour: but if you do not do me this service I\nwill proclaim throughout all the realms of the world that you are a\ndishonourable thief.”\nIván Tsarévich went out of the palace and began to weep bitterly: then\nhe came to the grey Wolf and related how it had gone with him.\n“Hail to thee, brave warrior, doughty of might!” the grey Wolf said.\n“Why did you not listen to my words, and take the golden bridle?”\n“I have been guilty before you,” said Iván Tsarévich.\n“Well, so be it,” the grey Wolf went on. “Sit on my back, on the grey\nWolf: I will take you wherever you require.”\nSo Iván Tsarévich sat on the grey Wolf’s back, and the grey Wolf scoured\nas fast as a dart, and at last he arrived at the kingdom of Princess\nEléna the Fair, to the golden palisade which surrounded the wonderful\ngarden; and the Wolf said to the Tsarévich: “Iván Tsarévich, slip off my\nback, off the grey Wolf, and go beh\n\n---\n\n[russian | gutenberg:62509 | en | Russian Folk-Tales — Afanasyev tradition (Gutenberg English)]\nis able to convict you.”\n“What do you mean, bátyushka? He can convict us when all night he slept\nthe sleep of the dead?”\nThen the poor nobleman brought the golden flower out of his pocket, and\nthe goblet, and said, “There is the testimony.”\nWhat could they do? The princesses had to acknowledge their guilt, and\nthe king bade the entrance to the subterranean realm be slated up. And\nhe married the poor nobleman to the youngest daughter, and they lived\nhappily ever after.\n                           VASILÍSA THE FAIR\nOnce upon a time there was a merchant who had been married for twelve\nyears and had only one daughter, Vasilísa the Fair. When her mother died\nthe girl was eight years old. On her death-bed the mother called the\nmaiden to her, took a doll out of her counterpane, said: “Vasilísushka,\nhear my last words. I am dying, and I will leave you my mother’s\nblessing and this doll. Keep thi\n\nНапиши цельную сказку примерно 600–1200 слов с завершённым финалом.",
+  "temperature": 0.85,
+  "max_tokens": 3500
+}</pre><p class="subcap">Ответ (response)</p><pre class="json">{
+  "text": "В одном далёком царстве, в одном далёком государстве, где луга зелёные стелились под ярким солнцем, а леса шептали свои тайны, жил-был добрый дачник по имени Иван. Работал он на своём огороде, сажал картошку да морковку, а у ворот его дачи всегда стояли оливковые деревья, словно стражи на входе в мир чудес.\n\nОднажды, под вечер, когда солнце уже скатилось за горизонт, к Ивану подошёл странник. Был он, видно, из далёких краёв, в одежде простоватой, но с добрыми глазами. Странник предложил Ивану помощь: \"Позволь мне поработать на твоей даче, а я поделюсь с тобой своими знаниями о земледелии\". Иван, не подозревая, что его доброта может обернуться бедой, согласился.\n\nПрошло время, и странник не только работал в поле, но и призвал к себе товарищей — людей с других земель, которые в поисках лучшей доли пришли к Ивану. Они работали усердно, но вскоре в деревне начали ходить слухи о том, что среди них есть те, кто не имеет документов.\n\nСтарый мудрец, живущий на краю села, познал горечь времён и пришёл к Ивану: \"Сын мой, будь осторожен. Наём нелегальных рабов сулит только беды. Если поймают тебя, велик будет штраф, а если не дай Бог, депортация — то печаль твою не пересказать\".\n\nИван, услышав мудрые слова, задумался: \"Как же мне проверить моих работников? Как мне избежать ненужных бед?\" Он решил обратиться к юристу, который всегда помогал жителям деревни в сложных обстоятельствах. Юрист, сидя под раскидистым деревом, сказал Ивану: \"Смотри, друг, всегда проверяй документы своих рабочих и оформляй трудовые отношения правильно. Это сохранит твою душу от тревог и твоё имя от беды\".\n\nВоодушевлённый советами, Иван позвал всех своих работников и, хоть и с сожалением, попросил их показать документы. Некоторые из них, опустив головы, начали объяснять, что у них нет разрешений на работу, что жизнь заставила их бежать из родных мест. Но Иван, вспомнив мудрость юриста, сказал: \"Я не могу рисковать своим именем и спокойствием своих детей. Мы должны поступать по закону\".\n\nВнезапно один из рабочих, смелый и решительный, вышел вперёд. \"Иван, позволь мне помочь! Я знаю, как оформить документы!\" Он рассказал, что у него есть знакомые, которые могут помочь в этом деле. Если все согласны, он возьмётся за дело и позаботится о легализации их труда.\n\nИван, увидев добрую волю своего рабочего, согласился. Они собрались все вместе, привели свои дела в порядок, и вскоре их работа оказалась легальной. Слава о добром Иване разнеслась по округе, и к нему начали приходить люди не только с просьбами о работе, но и с благодарностями за поддержку.\n\nМудрец, узнав о переменах, пришёл к Ивану и сказал: \"Ты не только сохранил своё имя, но и стал примером для других. Помогать надо всем, но делать это нужно с умом\". Иван, улыбаясь, ответил: \"Да, старец, я понял, что доброта должна идти рука об руку с мудростью\".\n\nС тех пор Иван стал известен не только как дачник, но и как мудрый наставник. Он обучал других, как важно уважать закон и заботиться о своих работниках. С его помощью в деревне начали собираться ярмарки труда, где люди делились знаниями и опытом, а каждый мог найти работу, не опасаясь за свою судьбу.\n\nИ так, в том далёком царстве, где луга стелились под ярким солнцем, а леса шептали свои тайны, доброта и мудрость соединились в сердце одного дачника, и жизнь в деревне стала ярче и полнее. Люди научились заботиться друг о друге, и их труды принесли плоды, которые были сладки, как мёд.\n\nА завершив свою историю, скажу вам, дорогие слушатели, что каждый из нас может стать не только хозяином своей земли, но и мудрым наставником для других, если будем помнить, что ответственность и доброта идут рука об руку."
+}</pre><h2 class="step">3. audit · chat_json_object</h2><p class="subcap">Запрос (request)</p><pre class="json">{
+  "system": "Ты агент аудита. Проверь связность, сказочный стиль, отсутствие прямой политической агитации. Верни JSON: approved (bool), notes (строка), tale (полный исправленный текст или пустая строка).",
+  "user": "Сводка новости:\nДачники и частные работодатели несут ответственность за наем нелегальных мигрантов, включая штрафы и расходы на депортацию. Юристы советуют проверять документы работников и оформлять трудовые отношения правильно.\n\nСказка:\nВ одном далёком царстве, в одном далёком государстве, где луга зелёные стелились под ярким солнцем, а леса шептали свои тайны, жил-был добрый дачник по имени Иван. Работал он на своём огороде, сажал картошку да морковку, а у ворот его дачи всегда стояли оливковые деревья, словно стражи на входе в мир чудес.\n\nОднажды, под вечер, когда солнце уже скатилось за горизонт, к Ивану подошёл странник. Был он, видно, из далёких краёв, в одежде простоватой, но с добрыми глазами. Странник предложил Ивану помощь: \"Позволь мне поработать на твоей даче, а я поделюсь с тобой своими знаниями о земледелии\". Иван, не подозревая, что его доброта может обернуться бедой, согласился.\n\nПрошло время, и странник не только работал в поле, но и призвал к себе товарищей — людей с других земель, которые в поисках лучшей доли пришли к Ивану. Они работали усердно, но вскоре в деревне начали ходить слухи о том, что среди них есть те, кто не имеет документов.\n\nСтарый мудрец, живущий на краю села, познал горечь времён и пришёл к Ивану: \"Сын мой, будь осторожен. Наём нелегальных рабов сулит только беды. Если поймают тебя, велик будет штраф, а если не дай Бог, депортация — то печаль твою не пересказать\".\n\nИван, услышав мудрые слова, задумался: \"Как же мне проверить моих работников? Как мне избежать ненужных бед?\" Он решил обратиться к юристу, который всегда помогал жителям деревни в сложных обстоятельствах. Юрист, сидя под раскидистым деревом, сказал Ивану: \"Смотри, друг, всегда проверяй документы своих рабочих и оформляй трудовые отношения правильно. Это сохранит твою душу от тревог и твоё имя от беды\".\n\nВоодушевлённый советами, Иван позвал всех своих работников и, хоть и с сожалением, попросил их показать документы. Некоторые из них, опустив головы, начали объяснять, что у них нет разрешений на работу, что жизнь заставила их бежать из родных мест. Но Иван, вспомнив мудрость юриста, сказал: \"Я не могу рисковать своим именем и спокойствием своих детей. Мы должны поступать по закону\".\n\nВнезапно один из рабочих, смелый и решительный, вышел вперёд. \"Иван, позволь мне помочь! Я знаю, как оформить документы!\" Он рассказал, что у него есть знакомые, которые могут помочь в этом деле. Если все согласны, он возьмётся за дело и позаботится о легализации их труда.\n\nИван, увидев добрую волю своего рабочего, согласился. Они собрались все вместе, привели свои дела в порядок, и вскоре их работа оказалась легальной. Слава о добром Иване разнеслась по округе, и к нему начали приходить люди не только с просьбами о работе, но и с благодарностями за поддержку.\n\nМудрец, узнав о переменах, пришёл к Ивану и сказал: \"Ты не только сохранил своё имя, но и стал примером для других. Помогать надо всем, но делать это нужно с умом\". Иван, улыбаясь, ответил: \"Да, старец, я понял, что доброта должна идти рука об руку с мудростью\".\n\nС тех пор Иван стал известен не только как дачник, но и как мудрый наставник. Он обучал других, как важно уважать закон и заботиться о своих работниках. С его помощью в деревне начали собираться ярмарки труда, где люди делились знаниями и опытом, а каждый мог найти работу, не опасаясь за свою судьбу.\n\nИ так, в том далёком царстве, где луга стелились под ярким солнцем, а леса шептали свои тайны, доброта и мудрость соединились в сердце одного дачника, и жизнь в деревне стала ярче и полнее. Люди научились заботиться друг о друге, и их труды принесли плоды, которые были сладки, как мёд.\n\nА завершив свою историю, скажу вам, дорогие слушатели, что каждый из нас может стать не только хозяином своей земли, но и мудрым наставником для других, если будем помнить, что ответственность и доброта идут рука об руку.\n",
+  "temperature": 0.2,
+  "max_tokens": 1200
+}</pre><p class="subcap">Ответ (response)</p><pre class="json">{
+  "approved": true,
+  "notes": "Текст сказки соответствует сказочному стилю, не содержит прямой политической агитации и имеет хорошую связность.",
+  "tale": "В одном далёком царстве, в одном далёком государстве, где луга зелёные стелились под ярким солнцем, а леса шептали свои тайны, жил-был добрый дачник по имени Иван. Работал он на своём огороде, сажал картошку да морковку, а у ворот его дачи всегда стояли оливковые деревья, словно стражи на входе в мир чудес.\n\nОднажды, под вечер, когда солнце уже скатилось за горизонт, к Ивану подошёл странник. Был он, видно, из далёких краёв, в одежде простоватой, но с добрыми глазами. Странник предложил Ивану помощь: \"Позволь мне поработать на твоей даче, а я поделюсь с тобой своими знаниями о земледелии\". Иван, не подозревая, что его доброта может обернуться бедой, согласился.\n\nПрошло время, и странник не только работал в поле, но и призвал к себе товарищей — людей с других земель, которые в поисках лучшей доли пришли к Ивану. Они работали усердно, но вскоре в деревне начали ходить слухи о том, что среди них есть те, кто не имеет документов.\n\nСтарый мудрец, живущий на краю села, познал горечь времён и пришёл к Ивану: \"Сын мой, будь осторожен. Наём нелегальных рабов сулит только беды. Если поймают тебя, велик будет штраф, а если не дай Бог, депортация — то печаль твою не пересказать\".\n\nИван, услышав мудрые слова, задумался: \"Как же мне проверить моих работников? Как мне избежать ненужных бед?\" Он решил обратиться к юристу, который всегда помогал жителям деревни в сложных обстоятельствах. Юрист, сидя под раскидистым деревом, сказал Ивану: \"Смотри, друг, всегда проверяй документы своих рабочих и оформляй трудовые отношения правильно. Это сохранит твою душу от тревог и твоё имя от беды\".\n\nВоодушевлённый советами, Иван позвал всех своих работников и, хоть и с сожалением, попросил их показать документы. Некоторые из них, опустив головы, начали объяснять, что у них нет разрешений на работу, что жизнь заставила их бежать из родных мест. Но Иван, вспомнив мудрость юриста, сказал: \"Я не могу рисковать своим именем и спокойствием своих детей. Мы должны поступать по закону\".\n\nВнезапно один из рабочих, смелый и решительный, вышел вперёд. \"Иван, позволь мне помочь! Я знаю, как оформить документы!\" Он рассказал, что у него есть знакомые, которые могут помочь в этом деле. Если все согласны, он возьмётся за дело и позаботится о легализации их труда.\n\nИван, увидев добрую волю своего рабочего, согласился. Они собрались все вместе, привели свои дела в порядок, и вскоре их работа оказалась легальной. Слава о добром Иване разнеслась по округе, и к нему начали приходить люди не только с просьбами о работе, но и с благодарностями за поддержку.\n\nМудрец, узнав о переменах, пришёл к Ивану и сказал: \"Ты не только сохранил своё имя, но и стал примером для других. Помогать надо всем, но делать это нужно с умом\". Иван, улыбаясь, ответил: \"Да, старец, я понял, что доброта должна идти рука об руку с мудростью\".\n\nС тех пор Иван стал известен не только как дачник, но и как мудрый наставник. Он обучал других, как важно уважать закон и заботиться о своих работниках. С его помощью в деревне начали собираться ярмарки труда, где люди делились знаниями и опытом, а каждый мог найти работу, не опасаясь за свою судьбу.\n\nИ так, в том далёком царстве, где луга стелились под ярким солнцем, а леса шептали свои тайны, доброта и мудрость соединились в сердце одного дачника, и жизнь в деревне стала ярче и полнее. Люди научились заботиться друг о друге, и их труды принесли плоды, которые были сладки, как мёд.\n\nА завершив свою историю, скажу вам, дорогие слушатели, что каждый из нас может стать не только хозяином своей земли, но и мудрым наставником для других, если будем помнить, что ответственность и доброта идут рука об руку."
+}</pre><h2 class="step">4. qa · chat_json_object</h2><p class="subcap">Запрос (request)</p><pre class="json">{
+  "system": "Ты агент «вопрос–ответ». Один вопрос по сказке и эталонный ответ. JSON: question, reference_answer (по-русски).",
+  "user": "Сказка:\nВ одном далёком царстве, в одном далёком государстве, где луга зелёные стелились под ярким солнцем, а леса шептали свои тайны, жил-был добрый дачник по имени Иван. Работал он на своём огороде, сажал картошку да морковку, а у ворот его дачи всегда стояли оливковые деревья, словно стражи на входе в мир чудес.\n\nОднажды, под вечер, когда солнце уже скатилось за горизонт, к Ивану подошёл странник. Был он, видно, из далёких краёв, в одежде простоватой, но с добрыми глазами. Странник предложил Ивану помощь: \"Позволь мне поработать на твоей даче, а я поделюсь с тобой своими знаниями о земледелии\". Иван, не подозревая, что его доброта может обернуться бедой, согласился.\n\nПрошло время, и странник не только работал в поле, но и призвал к себе товарищей — людей с других земель, которые в поисках лучшей доли пришли к Ивану. Они работали усердно, но вскоре в деревне начали ходить слухи о том, что среди них есть те, кто не имеет документов.\n\nСтарый мудрец, живущий на краю села, познал горечь времён и пришёл к Ивану: \"Сын мой, будь осторожен. Наём нелегальных рабов сулит только беды. Если поймают тебя, велик будет штраф, а если не дай Бог, депортация — то печаль твою не пересказать\".\n\nИван, услышав мудрые слова, задумался: \"Как же мне проверить моих работников? Как мне избежать ненужных бед?\" Он решил обратиться к юристу, который всегда помогал жителям деревни в сложных обстоятельствах. Юрист, сидя под раскидистым деревом, сказал Ивану: \"Смотри, друг, всегда проверяй документы своих рабочих и оформляй трудовые отношения правильно. Это сохранит твою душу от тревог и твоё имя от беды\".\n\nВоодушевлённый советами, Иван позвал всех своих работников и, хоть и с сожалением, попросил их показать документы. Некоторые из них, опустив головы, начали объяснять, что у них нет разрешений на работу, что жизнь заставила их бежать из родных мест. Но Иван, вспомнив мудрость юриста, сказал: \"Я не могу рисковать своим именем и спокойствием своих детей. Мы должны поступать по закону\".\n\nВнезапно один из рабочих, смелый и решительный, вышел вперёд. \"Иван, позволь мне помочь! Я знаю, как оформить документы!\" Он рассказал, что у него есть знакомые, которые могут помочь в этом деле. Если все согласны, он возьмётся за дело и позаботится о легализации их труда.\n\nИван, увидев добрую волю своего рабочего, согласился. Они собрались все вместе, привели свои дела в порядок, и вскоре их работа оказалась легальной. Слава о добром Иване разнеслась по округе, и к нему начали приходить люди не только с просьбами о работе, но и с благодарностями за поддержку.\n\nМудрец, узнав о переменах, пришёл к Ивану и сказал: \"Ты не только сохранил своё имя, но и стал примером для других. Помогать надо всем, но делать это нужно с умом\". Иван, улыбаясь, ответил: \"Да, старец, я понял, что доброта должна идти рука об руку с мудростью\".\n\nС тех пор Иван стал известен не только как дачник, но и как мудрый наставник. Он обучал других, как важно уважать закон и заботиться о своих работниках. С его помощью в деревне начали собираться ярмарки труда, где люди делились знаниями и опытом, а каждый мог найти работу, не опасаясь за свою судьбу.\n\nИ так, в том далёком царстве, где луга стелились под ярким солнцем, а леса шептали свои тайны, доброта и мудрость соединились в сердце одного дачника, и жизнь в деревне стала ярче и полнее. Люди научились заботиться друг о друге, и их труды принесли плоды, которые были сладки, как мёд.\n\nА завершив свою историю, скажу вам, дорогие слушатели, что каждый из нас может стать не только хозяином своей земли, но и мудрым наставником для других, если будем помнить, что ответственность и доброта идут рука об руку.\n",
+  "temperature": 0.4,
+  "max_tokens": 900
+}</pre><p class="subcap">Ответ (response)</p><pre class="json">{
+  "question": "Как Иван узнал о необходимости проверять документы своих работников?",
+  "reference_answer": "Иван узнал о необходимости проверять документы своих работников от старого мудреца, который предупредил его о возможных бедах, связанных с наймом нелегальных рабов, и от юриста, который посоветовал ему оформлять трудовые отношения правильно."
+}</pre></div>
+      </div>
+    </div>
+  </div>
+  <script>
+(function () {
+  var params = new URLSearchParams(window.location.search);
+  var id = params.get("id");
+  var errEl = document.getElementById("err");
+  var detailA = document.getElementById("backDetail");
+  if (id) {
+    detailA.href = "detail.html?id=" + encodeURIComponent(id);
+  }
+  if (!id) {
+    errEl.hidden = false;
+    errEl.textContent = "Нет параметра id в URL.";
+    return;
+  }
+  fetch("/api/reports/llm-logs/" + encodeURIComponent(id))
+    .then(function (r) {
+      if (r.status === 404) {
+        throw new Error("404");
+      }
+      if (!r.ok) { throw new Error(r.statusText); }
+      return r.json();
+    })
+    .then(function (d) {
+      document.getElementById("main").hidden = false;
+      document.getElementById("title").textContent = "Журнал LLM · " + d.run_id;
+      document.getElementById("meta").textContent =
+        "Создан: " + (d.created_at || "—") + " · шагов: "
+        + ((d.steps || []).length);
+      var host = document.getElementById("steps");
+      (d.steps || []).forEach(function (step, idx) {
+        var h = document.createElement("h2");
+        h.className = "step";
+        h.textContent = (idx + 1) + ". " + (step.step || "?")
+          + " · " + (step.call || "");
+        host.appendChild(h);
+        var rq = document.createElement("p");
+        rq.className = "subcap";
+        rq.textContent = "Запрос (request)";
+        host.appendChild(rq);
+        var pr = document.createElement("pre");
+        pr.className = "json";
+        pr.textContent = JSON.stringify(step.request || {}, null, 2);
+        host.appendChild(pr);
+        var rs = document.createElement("p");
+        rs.className = "subcap";
+        rs.textContent = "Ответ (response)";
+        host.appendChild(rs);
+        var pr2 = document.createElement("pre");
+        pr2.className = "json";
+        pr2.textContent = JSON.stringify(step.response != null
+          ? step.response
+          : {}, null, 2);
+        host.appendChild(pr2);
+      });
+    })
+    .catch(function (e) {
+      errEl.hidden = false;
+      errEl.textContent = e && e.message === "404"
+        ? "Журнал не найден (нет в последних 5 или неверный id)."
+        : "Ошибка загрузки или сеть.";
+    });
+})();
+  </script>
+  <script src="/static/collage.js"></script>
+  <script>
+    window.fairyNewsMountCollage("collageMountLlm");
+  </script>
+
+
+</body></html>

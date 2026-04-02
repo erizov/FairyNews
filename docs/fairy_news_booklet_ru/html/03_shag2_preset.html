@@ -1,0 +1,621 @@
+<!DOCTYPE html><html lang="ru"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FairyNews — MVP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&amp;family=Source+Sans+3:wght@400;600&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/collage.css">
+  <style>
+    :root {
+      --bg: #f0e8dc;
+      --bg-deep: #e4d8c8;
+      --card: #fffefb;
+      --accent: #5c3619;
+      --accent-hover: #7a4a24;
+      --muted: #5a534a;
+      --border: #c9b39a;
+      --err-bg: #fce8ec;
+      --err-fg: #7a1f33;
+      --radius: 12px;
+      --shadow: 0 4px 24px rgba(44, 36, 28, 0.08);
+      font-family: "Source Sans 3", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(165deg, var(--bg) 0%, var(--bg-deep) 100%);
+      color: #1f1812;
+    }
+    .top {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    .top-inner {
+      max-width: 44rem;
+      margin: 0 auto;
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .top-inner h1 {
+      margin: 0;
+      font-family: Literata, Georgia, serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+    .nav a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-left: 1rem;
+    }
+    .nav a:hover { color: var(--accent-hover); text-decoration: underline; }
+    main {
+      max-width: 44rem;
+      margin: 0 auto;
+      padding: 1.5rem 1rem 3.5rem;
+    }
+    .sub {
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.45;
+      margin: 0 0 1rem;
+    }
+    section.page {
+      display: none;
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 1.35rem 1.35rem 1.6rem;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(201, 179, 154, 0.45);
+    }
+    section.page.active { display: block; }
+    .step {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 0 0.35rem;
+    }
+    label {
+      display: block;
+      margin: 0.85rem 0 0.35rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #3d342a;
+    }
+    textarea, select {
+      width: 100%;
+      font: inherit;
+      font-size: 0.95rem;
+      padding: 0.6rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #fff;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    textarea:focus, select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(92, 54, 25, 0.12);
+    }
+    textarea { min-height: 8rem; resize: vertical; font-family: inherit; }
+    .news-scroll-wrap {
+      max-height: min(70vh, 32rem);
+      overflow-y: auto;
+      padding-right: 0.35rem;
+      margin: 0.25rem 0 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #fdfcfa;
+    }
+    .news-list { list-style: none; padding: 0.5rem; margin: 0; }
+    .news-list li {
+      margin: 0 0 0.55rem;
+      padding: 0;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--card);
+      transition: border-color 0.15s, box-shadow 0.15s;
+      overflow: visible;
+      position: relative;
+    }
+    .news-list li:hover,
+    .news-list li:focus-within {
+      z-index: 5;
+    }
+    .news-list li:last-child { margin-bottom: 0; }
+    .news-list li.checked {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(92, 54, 25, 0.35);
+    }
+    .news-row {
+      display: flex;
+      gap: 0.65rem;
+      align-items: flex-start;
+      padding: 0.65rem 0.75rem;
+      cursor: pointer;
+      margin: 0;
+      position: relative;
+    }
+    .news-row input {
+      margin-top: 0.35rem;
+      width: 1rem;
+      height: 1rem;
+      accent-color: var(--accent);
+      flex-shrink: 0;
+    }
+    .news-row-body { min-width: 0; flex: 1; }
+    .news-list .title {
+      font-weight: 600;
+      font-family: Literata, Georgia, serif;
+      font-size: 0.98rem;
+    }
+    .news-list .meta { font-size: 0.78rem; color: var(--muted); margin-top: 0.15rem; }
+    .news-preview {
+      margin-top: 0.4rem;
+      font-size: 0.86rem;
+      line-height: 1.45;
+      color: #4a4338;
+      padding: 0.15rem 0.2rem 0.15rem 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
+    }
+    .news-tip {
+      display: none;
+      position: absolute;
+      left: 1.55rem;
+      right: 0.55rem;
+      top: calc(100% - 2px);
+      margin: 0;
+      min-height: calc(1.35em * 8);
+      max-height: calc(1.35em * 24);
+      overflow-y: auto;
+      padding: 0.55rem 0.65rem;
+      font-size: 0.82rem;
+      line-height: 1.35;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #2e2920;
+      background: #fffefb;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      box-shadow: 0 8px 28px rgba(44, 36, 28, 0.18);
+      z-index: 25;
+    }
+    .news-row:hover .news-tip,
+    .news-row:focus-within .news-tip {
+      display: block;
+    }
+    .selection-hint {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin: 0 0 0.5rem;
+    }
+    .selection-hint strong { color: var(--accent); }
+    .actions { margin-top: 1.15rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    button {
+      padding: 0.58rem 1.2rem;
+      font: inherit;
+      font-weight: 600;
+      font-size: 0.92rem;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.05s;
+    }
+    button:hover:not(:disabled) { background: var(--accent-hover); }
+    button:active:not(:disabled) { transform: scale(0.98); }
+    button.secondary { background: #7d6f62; }
+    button.secondary:hover:not(:disabled) { background: #635850; }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    button .spinner {
+      display: none;
+      width: 1em;
+      height: 1em;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-right: 0.4rem;
+    }
+    button.loading .spinner { display: inline-block; }
+    button.loading .btn-label { opacity: 0.92; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .tale-out {
+      white-space: pre-wrap;
+      line-height: 1.65;
+      margin-top: 0.5rem;
+      font-family: Literata, Georgia, serif;
+      font-size: 1.02rem;
+    }
+    .err {
+      color: var(--err-fg);
+      font-size: 0.9rem;
+      margin-top: 0.65rem;
+      padding: 0.75rem 0.9rem;
+      background: var(--err-bg);
+      border-radius: 8px;
+      border: 1px solid #f0c4cd;
+      line-height: 1.4;
+    }
+    .meta-box {
+      font-size: 0.88rem;
+      color: var(--muted);
+      padding: 0.65rem 0.85rem;
+      background: #f7f3ec;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      border: 1px solid var(--border);
+    }
+    .meta-box a { color: var(--accent); font-weight: 600; }
+    h2.result-h {
+      font-family: Literata, Georgia, serif;
+      font-size: 1.05rem;
+      color: var(--accent);
+      margin: 1.35rem 0 0.4rem;
+    }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="top-inner">
+      <h1>FairyNews</h1>
+      <nav class="nav">
+        <a href="/">Генерация</a>
+        <a href="/reports-ui/index.html">Отчёты</a>
+      </nav>
+    </div>
+  </header>
+  <div class="collage-strip" aria-hidden="true">
+    <div id="collageMount" class="collage-grid"><div class="collage-cell"><img src="/static/collage/tile-00.jpg" alt="Стопка газет и бумаг, общий фон" loading="lazy" decoding="async" referrerpolicy="no-referrer" width="200" height="200"></div><div class="collage-cell"><img src="/static/collage/tile-01.jpg" alt="Текстура старой бумаги" loading="lazy" decoding="async" referrerpolicy="no-referrer" width="200" height="200"></div><div class="collage-cell"><img src="/static/collage/tile-02.jpg" alt="Городской пейзаж с высоты" loading="lazy" decoding="async" referrerpolicy="no-referrer" width="200" height="200"></div><div class="collage-cell"><img src="/static/collage/tile-03.jpg" alt="Звёздное небо (скопление Плеяд)" loading="lazy" decoding="async" referrerpolicy="no-referrer" width="200" height="200"></div><div class="collage-cell"><img src="/static/collage/tile-04.jpg" alt="Книга на подставке" loading="lazy" decoding="async" referrerpolicy="no-referrer" width="200" height="200"></div><div class="collage-cell"><img src="/static/collage/tile-05.jpg" alt="Старинные книги" loading="lazy" decoding="async" referrerpolicy="no-referrer" width="200" height="200"></div><div class="collage-cell"><img src="/static/collage/tile-06.jpg" alt="Лесная тропа" loading="lazy" decoding="async" referrerpolicy="no-referrer" width="200" height="200"></div><div class="collage-cell"><img src="/static/collage/tile-07.jpg" alt="Текстура дерева" loading="lazy" decoding="async" referrerpolicy="no-referrer" width="200" height="200"></div></div>
+    <p class="collage-caption" hidden="">Коллаж из равных кадров: общие мотивы
+      печати и фольклора (оформление, не иллюстрация к выбранным текстам).</p>
+  </div>
+  <main>
+    <p class="sub" hidden="">Данные с сервера приходят как JSON по контрактам
+      OpenAPI (модели Pydantic). Поток: новость → пресет RAG → сказка; четыре
+      агента: новости, генерация, аудит, вопрос–ответ.</p>
+
+    <section id="page1" class="page" aria-label="Шаг 1">
+      <p class="step">Шаг 1 из 3 — новость</p>
+      <p class="sub" style="margin-bottom:0.5rem">Шесть свежих заголовков
+        (три английских и три русских источника RSS, язык оригинала) и своё
+        поле текста ниже. Отметьте до трёх карточек или только свой текст.</p>
+      <p id="selectionHint" class="selection-hint" aria-live="polite">Отмечено: <strong>0</strong> из 3</p>
+      <div class="news-scroll-wrap">
+        <ul id="newsList" class="news-list"><li data-id="en-0"><label class="news-row"><input type="checkbox" aria-label="Выбрать: News outlets falsely report Somaliland called for extradition of Ilhan Omar"><div class="news-row-body"><div class="title">News outlets falsely report Somaliland called for extradition of Ilhan Omar</div><div class="meta">The Guardian (World) · en · Mon, 30 Mar 2026 16:38:43 GMT</div><div class="news-preview">Reports, based on X post from unofficial account, follow JD Vance’s accusations and threats of finding ‘legal remedies’ Sign up for the Breaking News US email to get newsletter alerts in your inbox Several news outlets have falsely reported that Somaliland’s government called for the extradition of Ilhan Omar , basing their stories on a post from an X account that does not represent the state despite its claims to the contrary. Fox News, the New York Post, Sinclair Broadcast Group’s the National News Desk and the Independent ran stories on the US representative. The reports centred on a post by @RepOfSomaliland in reaction to claims by JD Vance that Omar had committed immigration fraud, which echoed prior allegations against the Somali-born Minnesota Democrat that she has vehemently denied. Continue reading...</div></div><div class="news-tip" role="tooltip">Reports, based on X post from unofficial account, follow JD Vance’s accusations and threats of finding ‘legal remedies’ Sign up for the Breaking News US email to get newsletter alerts in your inbox Several news outlets have falsely reported that Somaliland’s government called for the extradition of Ilhan Omar , basing their stories on a post from an X account that does not represent the state despite its claims to the contrary. Fox News, the New York Post, Sinclair Broadcast Group’s the National News Desk and the Independent ran stories on the US representative. The reports centred on a post by @RepOfSomaliland in reaction to claims by JD Vance that Omar had committed immigration fraud, which echoed prior allegations against the Somali-born Minnesota Democrat that she has vehemently denied. Continue reading...</div></label></li><li data-id="en-1"><label class="news-row"><input type="checkbox" aria-label="Выбрать: Republicans in Congress say they have a deal to end the record-long shutdown at DHS"><div class="news-row-body"><div class="title">Republicans in Congress say they have a deal to end the record-long shutdown at DHS</div><div class="meta">NPR · en · Wed, 01 Apr 2026 17:27:46 -0400</div><div class="news-preview">The plan would fund DHS, except for immigration enforcement, through September. Republicans would then try to fund the whole agency for three years using a tactic that would not need Democratic votes. (Image credit: Kevin Dietsch)</div></div><div class="news-tip" role="tooltip">The plan would fund DHS, except for immigration enforcement, through September. Republicans would then try to fund the whole agency for three years using a tactic that would not need Democratic votes. (Image credit: Kevin Dietsch)</div></label></li><li data-id="en-2"><label class="news-row"><input type="checkbox" aria-label="Выбрать: Weather service issues early advisory"><div class="news-row-body"><div class="title">Weather service issues early advisory</div><div class="meta">wire-en · слот без RSS · en</div><div class="news-preview">Coastal winds may strengthen.
+Travelers asked to monitor alerts.
+Updates hourly.</div></div><div class="news-tip" role="tooltip">Coastal winds may strengthen.
+Travelers asked to monitor alerts.
+Updates hourly.</div></label></li><li data-id="ru-0"><label class="news-row"><input type="checkbox" aria-label="Выбрать: Эксперт Степанов: США отходят от НАТО из-за нежелания эскалации конфликта с РФ"><div class="news-row-body"><div class="title">Эксперт Степанов: США отходят от НАТО из-за нежелания эскалации конфликта с РФ</div><div class="meta">ТАСС · ru · Thu, 02 Apr 2026 03:07:50 +0300</div><div class="news-preview">Военный эксперт Института права и национальной безопасности РАНХиГС в то же время подчеркнул, что Вашингтон продолжает милитаризацию альянса через свои активы в европейском ВПК</div></div><div class="news-tip" role="tooltip">Военный эксперт Института права и национальной безопасности РАНХиГС в то же время подчеркнул, что Вашингтон продолжает милитаризацию альянса через свои активы в европейском ВПК</div></label></li><li data-id="ru-1"><label class="news-row"><input type="checkbox" aria-label="Выбрать: Жители США массово интересуются постройкой бункеров своими руками"><div class="news-row-body"><div class="title">Жители США массово интересуются постройкой бункеров своими руками</div><div class="meta">РИА Новости · ru · Thu, 02 Apr 2026 03:07:29 +0300</div><div class="news-preview">https://ria.ru/20260402/ssha-2084674339.html</div></div><div class="news-tip" role="tooltip">https://ria.ru/20260402/ssha-2084674339.html</div></label></li><li data-id="ru-2"><label class="news-row"><input type="checkbox" aria-label="Выбрать: Найденная на пляже нога оказалась конечностью пропавшего банкира"><div class="news-row-body"><div class="title">Найденная на пляже нога оказалась конечностью пропавшего банкира</div><div class="meta">Lenta.ru · ru · Thu, 02 Apr 2026 03:00:52 +0300</div><div class="news-preview">https://lenta.ru/news/2026/04/02/naydennaya-na-plyazhe-noga-okazalas-konechnostyu-propavshego-bankira/</div></div><div class="news-tip" role="tooltip">https://lenta.ru/news/2026/04/02/naydennaya-na-plyazhe-noga-okazalas-konechnostyu-propavshego-bankira/</div></label></li></ul>
+      </div>
+      <label for="customNews">Свой текст (если заполнен — используется только
+        он, без отмеченных новостей)</label>
+      <textarea id="customNews" placeholder="Заголовок и краткое содержание…" maxlength="8000"></textarea>
+      <p id="err1" class="err" hidden=""></p>
+      <div class="actions">
+        <button type="button" id="toStep2">Далее</button>
+      </div>
+    </section>
+
+    <section id="page2" class="page active" aria-label="Шаг 2">
+      <p class="step">Шаг 2 из 3 — пресет</p>
+      <label for="presetSelect">Опора для поиска похожих сюжетов (RAG)</label>
+      <select id="presetSelect"><option value="default">По умолчанию</option><option value="russian_folk">Русский фольклор</option><option value="european">Европейские мотивы</option><option value="oriental">Восточные мотивы</option></select>
+      <p id="presetDesc" class="sub" style="margin-top:0.65rem">Опоры из домена russian в индексе</p>
+      <p id="err2" class="err" hidden=""></p>
+      <div class="actions">
+        <button type="button" id="back2" class="secondary">Назад</button>
+        <button type="button" id="runGen">
+          <span class="spinner" aria-hidden="true"></span>
+          <span class="btn-label">Сгенерировать</span>
+        </button>
+      </div>
+    </section>
+
+    <section id="page3" class="page" aria-label="Шаг 3">
+      <p class="step">Шаг 3 из 3 — результат</p>
+      <p id="err3" class="err" hidden=""></p>
+      <div id="metaOut" class="meta-box"></div>
+      <div id="tale" class="tale-out"></div>
+      <h2 class="result-h">Вопрос по сказке</h2>
+      <div id="qaQ" class="tale-out" style="font-size:0.98rem"></div>
+      <div id="qaA" class="tale-out" style="color:var(--muted);font-size:0.95rem"></div>
+      <div class="actions">
+        <button type="button" id="back3" class="secondary">Назад к пресету</button>
+      </div>
+    </section>
+  </main>
+  <script>
+(function () {
+  const SEL_KEY = "fairynews_selected_ids";
+  const state = { selectedIds: [], presetId: "default", maxPick: 3 };
+
+  function apiDetail(detail) {
+    if (detail == null) return "";
+    if (typeof detail === "string") return detail;
+    if (Array.isArray(detail)) {
+      return detail.map(function (x) {
+        return (x && x.msg) ? x.msg : JSON.stringify(x);
+      }).join("; ");
+    }
+    return String(detail);
+  }
+
+  function showPage(n) {
+    document.querySelectorAll("section.page").forEach(function (el) {
+      el.classList.remove("active");
+    });
+    document.getElementById("page" + n).classList.add("active");
+  }
+
+  function showErr(id, msg) {
+    const el = document.getElementById(id);
+    if (msg) { el.textContent = msg; el.hidden = false; }
+    else { el.textContent = ""; el.hidden = true; }
+  }
+
+  function updateSelectionHint() {
+    const n = state.selectedIds.length;
+    const el = document.getElementById("selectionHint");
+    el.innerHTML = "Отмечено: <strong>" + n + "</strong> из "
+      + state.maxPick;
+  }
+
+  function syncLiCheckedClass() {
+    const ul = document.getElementById("newsList");
+    ul.querySelectorAll("li").forEach(function (li) {
+      const id = li.dataset.id;
+      const on = state.selectedIds.indexOf(id) >= 0;
+      li.classList.toggle("checked", on);
+    });
+  }
+
+  async function loadNews() {
+    const r = await fetch("/api/news");
+    const data = await r.json();
+    const ul = document.getElementById("newsList");
+    ul.innerHTML = "";
+    state.selectedIds = [];
+    (data.items || []).forEach(function (item) {
+      const li = document.createElement("li");
+      li.dataset.id = item.id;
+      const lbl = document.createElement("label");
+      lbl.className = "news-row";
+      const cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.setAttribute("aria-label", "Выбрать: " + item.title);
+      const body = document.createElement("div");
+      body.className = "news-row-body";
+      const t = document.createElement("div");
+      t.className = "title";
+      t.textContent = item.title;
+      const m = document.createElement("div");
+      m.className = "meta";
+      var metaParts = [];
+      if (item.source) { metaParts.push(item.source); }
+      if (item.lang) { metaParts.push(item.lang); }
+      if (item.date) { metaParts.push(item.date); }
+      m.textContent = metaParts.join(" · ");
+      const prev = document.createElement("div");
+      prev.className = "news-preview";
+      prev.textContent = item.summary || "";
+      body.appendChild(t);
+      body.appendChild(m);
+      body.appendChild(prev);
+      const tip = document.createElement("div");
+      tip.className = "news-tip";
+      tip.setAttribute("role", "tooltip");
+      tip.textContent = item.summary || "";
+      lbl.appendChild(cb);
+      lbl.appendChild(body);
+      lbl.appendChild(tip);
+      li.appendChild(lbl);
+      cb.addEventListener("change", function () {
+        const id = item.id;
+        if (cb.checked) {
+          if (state.selectedIds.length >= state.maxPick) {
+            cb.checked = false;
+            showErr(
+              "err1",
+              "Можно отметить не более " + state.maxPick + " новостей.",
+            );
+            return;
+          }
+          state.selectedIds.push(id);
+          showErr("err1", "");
+        } else {
+          state.selectedIds = state.selectedIds.filter(function (x) {
+            return x !== id;
+          });
+        }
+        syncLiCheckedClass();
+        updateSelectionHint();
+      });
+      ul.appendChild(li);
+    });
+    try {
+      const raw = sessionStorage.getItem(SEL_KEY);
+      if (raw) {
+        const want = JSON.parse(raw);
+        const valid = new Set((data.items || []).map(function (it) {
+          return it.id;
+        }));
+        if (Array.isArray(want) && want.length) {
+          state.selectedIds = want.filter(function (id) {
+            return valid.has(id);
+          }).slice(0, state.maxPick);
+          ul.querySelectorAll("li").forEach(function (li) {
+            var id = li.dataset.id;
+            var cb = li.querySelector("input[type=checkbox]");
+            if (cb && state.selectedIds.indexOf(id) >= 0) {
+              cb.checked = true;
+            }
+          });
+          syncLiCheckedClass();
+        }
+      }
+    } catch (e) { /* ignore */ }
+    updateSelectionHint();
+  }
+
+  async function loadPresets() {
+    const r = await fetch("/api/tale-presets");
+    const data = await r.json();
+    const sel = document.getElementById("presetSelect");
+    sel.innerHTML = "";
+    data.items.forEach(function (p) {
+      const opt = document.createElement("option");
+      opt.value = p.id;
+      opt.textContent = p.label;
+      sel.appendChild(opt);
+    });
+    sel.value = state.presetId;
+    function updDesc() {
+      const p = data.items.find(function (x) { return x.id === sel.value; });
+      document.getElementById("presetDesc").textContent =
+        p ? p.description : "";
+    }
+    sel.addEventListener("change", updDesc);
+    updDesc();
+  }
+
+  document.getElementById("toStep2").addEventListener("click", function () {
+    showErr("err1", "");
+    const custom = document.getElementById("customNews").value.trim();
+    if (!custom && state.selectedIds.length === 0) {
+      showErr("err1", "Отметьте одну–три новости или введите свой текст.");
+      return;
+    }
+    try {
+      sessionStorage.setItem(SEL_KEY, JSON.stringify(state.selectedIds));
+    } catch (e) { /* ignore */ }
+    showPage(2);
+  });
+
+  document.getElementById("back2").addEventListener("click", function () {
+    showPage(1);
+  });
+
+  document.getElementById("back3").addEventListener("click", function () {
+    showPage(2);
+  });
+
+  document.getElementById("runGen").addEventListener("click", async function () {
+    showErr("err2", "");
+    const btn = document.getElementById("runGen");
+    btn.disabled = true;
+    btn.classList.add("loading");
+    const custom = document.getElementById("customNews").value.trim();
+    const presetId = document.getElementById("presetSelect").value;
+    let ids = state.selectedIds.slice();
+    if (!custom && ids.length === 0) {
+      try {
+        const raw = sessionStorage.getItem(SEL_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed)) { ids = parsed; }
+        }
+      } catch (e) { /* ignore */ }
+    }
+    const body = { preset_id: presetId };
+    if (custom) {
+      body.news_text = custom;
+    } else if (ids.length === 1) {
+      /* Один id — news_id: работает и со старым API без поля news_ids */
+      body.news_id = ids[0];
+    } else if (ids.length > 1) {
+      body.news_ids = ids;
+    } else {
+      showErr("err2", "Нет текста новости. Вернитесь на шаг 1.");
+      btn.disabled = false;
+      btn.classList.remove("loading");
+      return;
+    }
+
+    try {
+      const r = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      const data = await r.json().catch(function () { return {}; });
+      if (!r.ok) {
+        const msg = apiDetail(data.detail) || r.statusText || "Ошибка";
+        showErr("err2", msg);
+        return;
+      }
+      document.getElementById("tale").textContent = data.tale || "";
+      var meta = "";
+      if (data.chosen_tale_source) {
+        meta += "Опора RAG: " + data.chosen_tale_source;
+      }
+      if (data.rag_chunks_used) {
+        meta += " · чанков: " + data.rag_chunks_used;
+      }
+      if (data.audit) {
+        meta += " · аудит: "
+          + (data.audit.approved ? "ок" : "правки")
+          + (data.audit.notes ? " — " + data.audit.notes : "");
+      }
+      var mo = document.getElementById("metaOut");
+      mo.textContent = meta;
+      if (data.run_id) {
+        mo.appendChild(document.createElement("br"));
+        var a = document.createElement("a");
+        a.href = "/reports-ui/detail.html?id="
+          + encodeURIComponent(data.run_id);
+        a.textContent = "Открыть отчёт по прогону";
+        mo.appendChild(a);
+        mo.appendChild(document.createElement("br"));
+        var aLog = document.createElement("a");
+        aLog.href = data.llm_log_url || (
+          "/reports-ui/llm-log.html?id=" + encodeURIComponent(data.run_id)
+        );
+        aLog.textContent = "Журнал LLM (JSON по шагам)";
+        mo.appendChild(aLog);
+      }
+      document.getElementById("qaQ").textContent =
+        (data.qa && data.qa.question) ? data.qa.question : "";
+      document.getElementById("qaA").textContent =
+        (data.qa && data.qa.reference_answer)
+          ? "Эталон: " + data.qa.reference_answer
+          : "";
+      showErr("err3", "");
+      showPage(3);
+    } catch (e) {
+      showErr("err2", "Сеть или сервер недоступны.");
+    } finally {
+      btn.disabled = false;
+      btn.classList.remove("loading");
+    }
+  });
+
+  loadNews();
+  loadPresets();
+})();
+  </script>
+  <script src="/static/collage.js"></script>
+  <script>
+    window.fairyNewsMountCollage("collageMount");
+  </script>
+
+
+</body></html>

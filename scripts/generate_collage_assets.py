@@ -4,8 +4,8 @@
 
     python scripts/generate_collage_assets.py
 
-Чтобы использовать свои JPEG/PNG, положите файлы в ``frontend/collage`` и
-обновите имена и расширения в ``_COLLAGE_FILES`` (``app.api_schemas``).
+Растровые кадры (и fallback на SVG при ошибке загрузки JPG):
+``python scripts/download_collage_images.py`` (Wikimedia Commons).
 """
 
 from __future__ import annotations

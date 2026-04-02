@@ -23,6 +23,17 @@
   `experiments/etap4_screenshots/etap4_screenshots.docx` (PNG в
   `experiments/etap4_screenshots/png/`). Опции: `--port`, `--run-id`,
   `--skip-capture` (только сборка .docx из уже снятых PNG).
+- Буклет **Fairy News** (англ., польза для детей/взрослых + полные скриншоты
+  пайплайна и отчётов с переходами по id / trace):
+  `python scripts/build_fairy_news_booklet.py` →
+  `docs/fairy_news_booklet/Fairy_News_Booklet.docx`
+  (см.   [`docs/fairy_news_booklet/README.md`](../docs/fairy_news_booklet/README.md)).
+- Русский буклет **из HTML** (без PNG, полный текст страниц в DOCX):
+  `python scripts/build_fairy_news_ru_booklet.py` →
+  `docs/fairy_news_booklet_ru/Fairy_News_RU_Booklet.docx`,
+  `…_Lite.docx`, `…_Prilozhenie_DOM.docx`; опционально
+  `FAIRYNEWS_BOOKLET_DEMO_URL`
+  (см. [`docs/fairy_news_booklet_ru/README.md`](../docs/fairy_news_booklet_ru/README.md)).
 
 ## Веб-сервер (uvicorn)
 

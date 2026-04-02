@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -148,32 +149,56 @@ class ReportRunDocument(BaseModel):
     llm_log_url: str | None = None
 
 
-_COLLAGE_FILES: list[
+_COLLAGE_TILES: list[
     tuple[str, str, Literal["news", "folktale", "neutral"]]
 ] = [
-    ("tile-00.svg", "Стопка газет и бумаг, общий фон", "news"),
-    ("tile-01.svg", "Текстура старой бумаги", "neutral"),
-    ("tile-02.svg", "Абстрактный городской фон", "news"),
-    ("tile-03.svg", "Ночное небо со звёздами", "folktale"),
-    ("tile-04.svg", "Разворот книги, без названия", "folktale"),
-    ("tile-05.svg", "Книжные корешки в ряд", "folktale"),
-    ("tile-06.svg", "Тропа в лесу, без сюжета", "neutral"),
-    ("tile-07.svg", "Мягкий тёплый блик, абстрактно", "neutral"),
+    ("tile-00", "Стопка газет и бумаг, общий фон", "news"),
+    ("tile-01", "Текстура старой бумаги", "neutral"),
+    ("tile-02", "Городской пейзаж с высоты", "news"),
+    ("tile-03", "Звёздное небо (скопление Плеяд)", "folktale"),
+    ("tile-04", "Книга на подставке", "folktale"),
+    ("tile-05", "Старинные книги", "folktale"),
+    ("tile-06", "Лесная тропа", "neutral"),
+    ("tile-07", "Текстура дерева", "neutral"),
 ]
 
 
-def default_collage_tiles() -> list[CollageTileOut]:
-    """Локальные ``frontend/collage/tile-*.svg`` (без внешних URL в рантайме).
+def _collage_assets_dir() -> Path:
+    return Path(__file__).resolve().parent.parent / "frontend" / "collage"
 
-    Сборка ассетов: ``python scripts/generate_collage_assets.py``.
+
+def _resolved_collage_file(stem: str) -> tuple[str, str]:
+    """Имя файла в ``static/collage`` и опциональный fallback SVG URL."""
+    directory = _collage_assets_dir()
+    for ext in (".webp", ".png", ".jpg", ".jpeg", ".svg"):
+        path = directory / f"{stem}{ext}"
+        if path.is_file():
+            name = path.name
+            if name.endswith(".svg"):
+                return name, ""
+            svg = directory / f"{stem}.svg"
+            if svg.is_file():
+                return name, f"/static/collage/{stem}.svg"
+            return name, ""
+    return f"{stem}.svg", ""
+
+
+def default_collage_tiles() -> list[CollageTileOut]:
+    """Локальные файлы ``frontend/collage/`` (растр или SVG).
+
+    Растр: ``python scripts/download_collage_images.py``; запасной ряд SVG:
+    ``python scripts/generate_collage_assets.py``.
     """
-    return [
-        CollageTileOut(
-            src=f"/static/collage/{fn}",
-            alt=alt,
-            motif=motif,
-            placeholder=False,
-            fallback_src="",
+    items: list[CollageTileOut] = []
+    for stem, alt, motif in _COLLAGE_TILES:
+        filename, fallback = _resolved_collage_file(stem)
+        items.append(
+            CollageTileOut(
+                src=f"/static/collage/{filename}",
+                alt=alt,
+                motif=motif,
+                placeholder=False,
+                fallback_src=fallback,
+            )
         )
-        for fn, alt, motif in _COLLAGE_FILES
-    ]
+    return items
