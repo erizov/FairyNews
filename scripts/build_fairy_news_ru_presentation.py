@@ -113,11 +113,12 @@ def _add_screenshot_slide(prs: Any, title: str, image_path: Path) -> bool:
 
     if iw_px and ih_px and iw_px > 0 and ih_px > 0:
         ar = ih_px / float(iw_px)
-        w_in = max_w_in
-        h_in = w_in * ar
-        if h_in > max_h_in:
-            h_in = max_h_in
-            w_in = h_in / ar
+        # Height-first: гарантируем «влезание» по высоте на один слайд.
+        h_in = max_h_in
+        w_in = h_in / ar
+        if w_in > max_w_in:
+            w_in = max_w_in
+            h_in = w_in * ar
     else:
         w_in = max_w_in
         h_in = max_h_in

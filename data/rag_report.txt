@@ -1,0 +1,166 @@
+=== Отчёт RAG (корпус сказок) (Fairy-tale RAG corpus report) ===
+
+-- Краткая сводка (Brief summary) --
+  Всего чанков (total chunks): 7834; Уникальных произведений (unique works): 78
+  По языку текста чанков (by chunk text language): {'en': 6702, 'ru': 1132}
+  Чаще всего по странам (top countries): [('RU', 2722), ('GB-SCT', 1585), ('USSR', 1132), ('MENA', 764), ('DE', 666)]
+  Чаще всего по авторам (top authors): [('Andrew Lang', 1585), ('unknown', 1132), ('Leo Tolstoy (Л. Н. Толстой)', 970), ('anonymous / compiled (tr. Lang)', 764), ('Alexander Afanasyev (corpus; tr. Post Wheeler et al.)', 701)]
+  Чаще всего в подсказках героев (top hero tokens): [('fables', 970), ("children's stories", 970), ('moral tales', 970), ('natural science stories', 970), ('басни', 970)]
+
+
+-- По домену (by domain) --
+  russian: 3854
+  european: 1995
+  european_compilation: 1221
+  oriental: 764
+
+-- По стране / региону (by country / region) --
+  RU: 2722
+  GB-SCT: 1585
+  USSR: 1132
+  MENA: 764
+  DE: 666
+  GB-ENG: 570
+  DK: 383
+  FR: 12
+
+-- По автору (by author) --
+  Andrew Lang: 1585
+  unknown: 1132
+  Leo Tolstoy (Л. Н. Толстой): 970
+  anonymous / compiled (tr. Lang): 764
+  Alexander Afanasyev (corpus; tr. Post Wheeler et al.): 701
+  Brothers Grimm: 666
+  Anthony R. Montalba (compiler): 570
+  Arthur Ransome (reteller): 456
+  N. A. Polevoi (tr.) / Russian skazki tradition: 435
+  Hans Christian Andersen: 383
+  Verra Kalamatiano de Blumenthal: 160
+  Charles Perrault: 12
+
+-- По языку текста чанков (by chunk text language) --
+  en: 6702
+  ru: 1132
+
+-- Произведения (снимок метаданных) (works (metadata snapshot)) --
+  file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_beshenyj-pjos.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_bolnoj-kaban.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_kirpich-i-ldina.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_kukushka-i-skvorec.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-aisty-i-lyagushki.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-arbuz.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-belye-perchatki.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-bez-viny-postradavshie.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-dalnovidnaya-soroka.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-dva-tolstyaka-i-zayac.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-dve-podrugi.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-ehkzamen.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-griby.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-khochu-bodatsya.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-lev-i-yarlyk.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-lisa-i-bober.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-mukha-i-pchela.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-ne-stoit-blagodarnosti.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-nevruchennaya-nagrada.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-oshibka.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-romashka-i-roza.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-slon-zhivopisec.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-smeshnaya-familiya.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-zayac-i-cherepakha.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-zayac-vo-khmelyu.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-zayache-gore.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-zerkalo.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_nepyushhij-vorobej.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_ostorozhnye-pticy.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_otvet.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_prestuplenie-bez-nakazaniya.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_zakhvalennaya-pevunya.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_zavidnoe-uporstvo.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_dva-brata.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_dva-klena.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_golyj-korol.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_novye-priklyucheniya-kota-v-sapogakh.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_obyknovennoe-chudo.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_pervoklassnica.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_priklyucheniya-shury-i-marusi.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_rasseyannyj-volshebnik.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_shvarc-drakon.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_shvarc-krasnaya-shapochka.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_shvarc-snezhnaya-koroleva.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_shvarc-ten.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_skazka-o-poteryannom-vremeni.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_lev-i-mysh.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_lev-tolstoj-teljonok-na-ldu.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_popugaj.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-belka-i-volk.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-dva-tovarishha.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-kak-muzhik-ubral-kamen.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-komar-i-lev.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-kot-i-myshi.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-lev-i-lisica.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-lev-medved-i-lisica.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-lgun.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-muravej-i-golubka.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-osel-i-loshad.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-otec-i-synovya.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-sobaka-i-ee-ten.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-volk-i-yagnenok.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-volk-i-zhuravl.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-voron-i-lisica.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-zajcy-i-lyagushki.txt | russian | USSR | unknown | lang=ru
+  file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_volk-i-koza.txt | russian | USSR | unknown | lang=ru
+  gutenberg:128 | oriental | MENA | anonymous / compiled (tr. Lang) | lang=en
+    Подсказки по образам героев (hero figure hints) (RU): Шахерезада; визири; джинны (разные варианты)
+    Подсказки по образам героев (hero figure hints) (EN): Scheherazade; viziers; djinni (var.)
+  gutenberg:12851 | russian | RU | Verra Kalamatiano de Blumenthal | lang=en
+    Подсказки по образам героев (hero figure hints) (RU): Антология — восточнославянские фольклорные мотивы
+    Подсказки по образам героев (hero figure hints) (EN): Anthology — East Slavic folk motifs
+  gutenberg:1597 | european | DK | Hans Christian Andersen | lang=en
+    Подсказки по образам героев (hero figure hints) (RU): Русалочка; Снежная королева; типичные персонажи Андерсена
+    Подсказки по образам героев (hero figure hints) (EN): The Little Mermaid; The Snow Queen; usual Andersen figures
+  gutenberg:16981 | russian | RU | Arthur Ransome (reteller) | lang=en
+    Подсказки по образам героев (hero figure hints) (RU): Баба-Яга; Иван; простак и летающее чудо; народные образы
+    Подсказки по образам героев (hero figure hints) (EN): Baba Yaga; Ivan; fool who flies; folk figures
+  gutenberg:25421 | european | FR | Charles Perrault | lang=en
+    Подсказки по образам героев (hero figure hints) (RU): Золушка; Синяя Борода; Спящая красавица; Кот в сапогах
+    Подсказки по образам героев (hero figure hints) (EN): Cinderella; Bluebeard; Sleeping Beauty; Puss in Boots
+  gutenberg:2591 | european | DE | Brothers Grimm | lang=en
+    Подсказки по образам героев (hero figure hints) (RU): Красная Шапочка; Белоснежка; волк; ведьма; множество народных образов
+    Подсказки по образам героев (hero figure hints) (EN): Red Riding Hood; Snow White; wolf; witch; many folk figures
+  gutenberg:3282 | european_compilation | GB-SCT | Andrew Lang | lang=en
+    Подсказки по образам героев (hero figure hints) (RU): Антология — смешанные регионы
+    Подсказки по образам героев (hero figure hints) (EN): Anthology — mixed regions
+  gutenberg:34705 | russian | RU | N. A. Polevoi (tr.) / Russian skazki tradition | lang=en
+    Подсказки по образам героев (hero figure hints) (RU): Салтан; цари; лиса; типичные русские сказочные образы
+    Подсказки по образам героев (hero figure hints) (EN): Saltan; tsars; fox; typical Russian tale figures
+  gutenberg:34956 | european_compilation | GB-ENG | Anthony R. Montalba (compiler) | lang=en
+    Подсказки по образам героев (hero figure hints) (RU): Антология — много народов
+    Подсказки по образам героев (hero figure hints) (EN): Anthology — many nations
+  gutenberg:38025 | russian | RU | Leo Tolstoy (Л. Н. Толстой) | lang=en
+    Подсказки по образам героев (hero figure hints) (RU): Басни; рассказы для детей; поучительные сказки; естествознание
+    Подсказки по образам героев (hero figure hints) (EN): Fables; children's stories; moral tales; natural science stories
+  gutenberg:503 | european | GB-SCT | Andrew Lang | lang=en
+    Подсказки по образам героев (hero figure hints) (RU): Антология — европейские и мировые сказочные образы
+    Подсказки по образам героев (hero figure hints) (EN): Anthology — many European and world tale figures
+  gutenberg:62509 | russian | RU | Alexander Afanasyev (corpus; tr. Post Wheeler et al.) | lang=en
+    Подсказки по образам героев (hero figure hints) (RU): Жар-птица; Василиса; Мороз Иванович; Царевна-лягушка; типы сказок
+    Подсказки по образам героев (hero figure hints) (EN): Fire-Bird; Vasilisa; Father Frost; Frog Princess; many tale types
+
+-- Частота слов в подсказках героев (hero hint token frequency) --
+  fables: 970
+  children's stories: 970
+  moral tales: 970
+  natural science stories: 970
+  басни: 970
+  рассказы для детей: 970
+  поучительные сказки: 970
+  естествознание: 970
+  anthology — many european and world tale figures: 934
+  scheherazade: 764
+  viziers: 764
+  djinni (var.): 764
+  шахерезада: 764
+  визири: 764
+  джинны (разные варианты): 764
+
+Примечание (Note): «Произведение» = один уникальный source (книга Gutenberg по id или локальный .txt). Чанк не равен отдельной сказке без разметки по заголовкам. Язык текста чанка — поле content_lang (en/ru).

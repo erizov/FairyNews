@@ -1,0 +1,1099 @@
+{
+  "total_chunks": 7834,
+  "unique_works": 78,
+  "by_domain": {
+    "russian": 3854,
+    "european": 1995,
+    "european_compilation": 1221,
+    "oriental": 764
+  },
+  "by_country": {
+    "RU": 2722,
+    "GB-SCT": 1585,
+    "USSR": 1132,
+    "MENA": 764,
+    "DE": 666,
+    "GB-ENG": 570,
+    "DK": 383,
+    "FR": 12
+  },
+  "by_author": {
+    "Andrew Lang": 1585,
+    "unknown": 1132,
+    "Leo Tolstoy (Л. Н. Толстой)": 970,
+    "anonymous / compiled (tr. Lang)": 764,
+    "Alexander Afanasyev (corpus; tr. Post Wheeler et al.)": 701,
+    "Brothers Grimm": 666,
+    "Anthony R. Montalba (compiler)": 570,
+    "Arthur Ransome (reteller)": 456,
+    "N. A. Polevoi (tr.) / Russian skazki tradition": 435,
+    "Hans Christian Andersen": 383,
+    "Verra Kalamatiano de Blumenthal": 160,
+    "Charles Perrault": 12
+  },
+  "by_content_lang": {
+    "en": 6702,
+    "ru": 1132
+  },
+  "chunks_per_work": {
+    "gutenberg:38025": 970,
+    "gutenberg:503": 934,
+    "gutenberg:128": 764,
+    "gutenberg:62509": 701,
+    "gutenberg:2591": 666,
+    "gutenberg:3282": 651,
+    "gutenberg:34956": 570,
+    "gutenberg:16981": 456,
+    "gutenberg:34705": 435,
+    "gutenberg:1597": 383,
+    "gutenberg:12851": 160,
+    "file:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_obyknovennoe-chudo.txt": 149,
+    "file:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_shvarc-ten.txt": 142,
+    "file:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_golyj-korol.txt": 140,
+    "file:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_shvarc-drakon.txt": 139,
+    "file:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_pervoklassnica.txt": 121,
+    "file:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_shvarc-snezhnaya-koroleva.txt": 118,
+    "file:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_dva-klena.txt": 84,
+    "file:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_shvarc-krasnaya-shapochka.txt": 57,
+    "file:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_dva-brata.txt": 35,
+    "file:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_novye-priklyucheniya-kota-v-sapogakh.txt": 26,
+    "file:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_priklyucheniya-shury-i-marusi.txt": 22,
+    "file:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_skazka-o-poteryannom-vremeni.txt": 17,
+    "gutenberg:25421": 12,
+    "file:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_rasseyannyj-volshebnik.txt": 8,
+    "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-bez-viny-postradavshie.txt": 3,
+    "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_beshenyj-pjos.txt": 2,
+    "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_bolnoj-kaban.txt": 2,
+    "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_kukushka-i-skvorec.txt": 2,
+    "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-belye-perchatki.txt": 2,
+    "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-dalnovidnaya-soroka.txt": 2,
+    "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-dva-tolstyaka-i-zayac.txt": 2,
+    "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-dve-podrugi.txt": 2,
+    "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-ehkzamen.txt": 2,
+    "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-lev-i-yarlyk.txt": 2,
+    "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-lisa-i-bober.txt": 2,
+    "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-oshibka.txt": 2,
+    "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-slon-zhivopisec.txt": 2,
+    "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-zayac-i-cherepakha.txt": 2,
+    "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-zayac-vo-khmelyu.txt": 2,
+    "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-zayache-gore.txt": 2,
+    "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-zerkalo.txt": 2,
+    "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_nepyushhij-vorobej.txt": 2,
+    "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_ostorozhnye-pticy.txt": 2,
+    "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_prestuplenie-bez-nakazaniya.txt": 2,
+    "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_kirpich-i-ldina.txt": 1,
+    "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-aisty-i-lyagushki.txt": 1,
+    "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-arbuz.txt": 1,
+    "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-griby.txt": 1,
+    "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-khochu-bodatsya.txt": 1,
+    "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-mukha-i-pchela.txt": 1,
+    "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-ne-stoit-blagodarnosti.txt": 1,
+    "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-nevruchennaya-nagrada.txt": 1,
+    "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-romashka-i-roza.txt": 1,
+    "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-smeshnaya-familiya.txt": 1,
+    "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_otvet.txt": 1,
+    "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_zakhvalennaya-pevunya.txt": 1,
+    "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_zavidnoe-uporstvo.txt": 1,
+    "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_lev-i-mysh.txt": 1,
+    "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_lev-tolstoj-teljonok-na-ldu.txt": 1,
+    "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_popugaj.txt": 1,
+    "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-belka-i-volk.txt": 1,
+    "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-dva-tovarishha.txt": 1,
+    "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-kak-muzhik-ubral-kamen.txt": 1,
+    "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-komar-i-lev.txt": 1,
+    "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-kot-i-myshi.txt": 1,
+    "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-lev-i-lisica.txt": 1,
+    "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-lev-medved-i-lisica.txt": 1,
+    "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-lgun.txt": 1,
+    "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-muravej-i-golubka.txt": 1,
+    "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-osel-i-loshad.txt": 1,
+    "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-otec-i-synovya.txt": 1,
+    "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-sobaka-i-ee-ten.txt": 1,
+    "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-volk-i-yagnenok.txt": 1,
+    "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-volk-i-zhuravl.txt": 1,
+    "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-voron-i-lisica.txt": 1,
+    "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-zajcy-i-lyagushki.txt": 1,
+    "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_volk-i-koza.txt": 1
+  },
+  "works": [
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_beshenyj-pjos.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_beshenyj-pjos.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_bolnoj-kaban.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_bolnoj-kaban.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_kirpich-i-ldina.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_kirpich-i-ldina.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_kukushka-i-skvorec.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_kukushka-i-skvorec.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-aisty-i-lyagushki.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-aisty-i-lyagushki.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-arbuz.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-arbuz.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-belye-perchatki.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-belye-perchatki.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-bez-viny-postradavshie.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-bez-viny-postradavshie.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-dalnovidnaya-soroka.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-dalnovidnaya-soroka.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-dva-tolstyaka-i-zayac.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-dva-tolstyaka-i-zayac.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-dve-podrugi.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-dve-podrugi.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-ehkzamen.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-ehkzamen.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-griby.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-griby.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-khochu-bodatsya.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-khochu-bodatsya.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-lev-i-yarlyk.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-lev-i-yarlyk.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-lisa-i-bober.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-lisa-i-bober.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-mukha-i-pchela.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-mukha-i-pchela.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-ne-stoit-blagodarnosti.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-ne-stoit-blagodarnosti.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-nevruchennaya-nagrada.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-nevruchennaya-nagrada.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-oshibka.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-oshibka.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-romashka-i-roza.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-romashka-i-roza.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-slon-zhivopisec.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-slon-zhivopisec.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-smeshnaya-familiya.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-smeshnaya-familiya.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-zayac-i-cherepakha.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-zayac-i-cherepakha.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-zayac-vo-khmelyu.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-zayac-vo-khmelyu.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-zayache-gore.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-zayache-gore.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-zerkalo.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_mikhalkov-zerkalo.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_nepyushhij-vorobej.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_nepyushhij-vorobej.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_ostorozhnye-pticy.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_ostorozhnye-pticy.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_otvet.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_otvet.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_prestuplenie-bez-nakazaniya.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_prestuplenie-bez-nakazaniya.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_zakhvalennaya-pevunya.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_zakhvalennaya-pevunya.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_zavidnoe-uporstvo.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/mikhalkov/nukadeti_zavidnoe-uporstvo.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_dva-brata.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_dva-brata.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_dva-klena.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_dva-klena.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_golyj-korol.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_golyj-korol.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_novye-priklyucheniya-kota-v-sapogakh.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_novye-priklyucheniya-kota-v-sapogakh.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_obyknovennoe-chudo.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_obyknovennoe-chudo.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_pervoklassnica.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_pervoklassnica.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_priklyucheniya-shury-i-marusi.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_priklyucheniya-shury-i-marusi.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_rasseyannyj-volshebnik.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_rasseyannyj-volshebnik.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_shvarc-drakon.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_shvarc-drakon.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_shvarc-krasnaya-shapochka.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_shvarc-krasnaya-shapochka.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_shvarc-snezhnaya-koroleva.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_shvarc-snezhnaya-koroleva.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_shvarc-ten.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_shvarc-ten.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_skazka-o-poteryannom-vremeni.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/shvarc/nukadeti_skazka-o-poteryannom-vremeni.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_lev-i-mysh.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_lev-i-mysh.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_lev-tolstoj-teljonok-na-ldu.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_lev-tolstoj-teljonok-na-ldu.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_popugaj.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_popugaj.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-belka-i-volk.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-belka-i-volk.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-dva-tovarishha.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-dva-tovarishha.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-kak-muzhik-ubral-kamen.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-kak-muzhik-ubral-kamen.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-komar-i-lev.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-komar-i-lev.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-kot-i-myshi.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-kot-i-myshi.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-lev-i-lisica.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-lev-i-lisica.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-lev-medved-i-lisica.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-lev-medved-i-lisica.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-lgun.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-lgun.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-muravej-i-golubka.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-muravej-i-golubka.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-osel-i-loshad.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-osel-i-loshad.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-otec-i-synovya.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-otec-i-synovya.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-sobaka-i-ee-ten.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-sobaka-i-ee-ten.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-volk-i-yagnenok.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-volk-i-yagnenok.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-volk-i-zhuravl.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-volk-i-zhuravl.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-voron-i-lisica.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-voron-i-lisica.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-zajcy-i-lyagushki.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_tolstoj-zajcy-i-lyagushki.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "file:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_volk-i-koza.txt",
+      "domain": "russian",
+      "country": "USSR",
+      "author": "unknown",
+      "work_note": "local:data/raw/local_tales/soviet/nukadeti/tolstoy/nukadeti_volk-i-koza.txt",
+      "heroes_hint_en": "",
+      "heroes_hint_ru": "",
+      "content_lang": "ru"
+    },
+    {
+      "source": "gutenberg:128",
+      "domain": "oriental",
+      "country": "MENA",
+      "author": "anonymous / compiled (tr. Lang)",
+      "work_note": "The Arabian Nights Entertainments (Lang selection)",
+      "heroes_hint_en": "Scheherazade; viziers; djinni (var.)",
+      "heroes_hint_ru": "Шахерезада; визири; джинны (разные варианты)",
+      "content_lang": "en"
+    },
+    {
+      "source": "gutenberg:12851",
+      "domain": "russian",
+      "country": "RU",
+      "author": "Verra Kalamatiano de Blumenthal",
+      "work_note": "Folk Tales from the Russian",
+      "heroes_hint_en": "Anthology — East Slavic folk motifs",
+      "heroes_hint_ru": "Антология — восточнославянские фольклорные мотивы",
+      "content_lang": "en"
+    },
+    {
+      "source": "gutenberg:1597",
+      "domain": "european",
+      "country": "DK",
+      "author": "Hans Christian Andersen",
+      "work_note": "Hans Christian Andersen fairy tales (selection)",
+      "heroes_hint_en": "The Little Mermaid; The Snow Queen; usual Andersen figures",
+      "heroes_hint_ru": "Русалочка; Снежная королева; типичные персонажи Андерсена",
+      "content_lang": "en"
+    },
+    {
+      "source": "gutenberg:16981",
+      "domain": "russian",
+      "country": "RU",
+      "author": "Arthur Ransome (reteller)",
+      "work_note": "Old Peter's Russian Tales",
+      "heroes_hint_en": "Baba Yaga; Ivan; fool who flies; folk figures",
+      "heroes_hint_ru": "Баба-Яга; Иван; простак и летающее чудо; народные образы",
+      "content_lang": "en"
+    },
+    {
+      "source": "gutenberg:25421",
+      "domain": "european",
+      "country": "FR",
+      "author": "Charles Perrault",
+      "work_note": "Charles Perrault — Tales of Passed Times",
+      "heroes_hint_en": "Cinderella; Bluebeard; Sleeping Beauty; Puss in Boots",
+      "heroes_hint_ru": "Золушка; Синяя Борода; Спящая красавица; Кот в сапогах",
+      "content_lang": "en"
+    },
+    {
+      "source": "gutenberg:2591",
+      "domain": "european",
+      "country": "DE",
+      "author": "Brothers Grimm",
+      "work_note": "Grimms' Fairy Tales",
+      "heroes_hint_en": "Red Riding Hood; Snow White; wolf; witch; many folk figures",
+      "heroes_hint_ru": "Красная Шапочка; Белоснежка; волк; ведьма; множество народных образов",
+      "content_lang": "en"
+    },
+    {
+      "source": "gutenberg:3282",
+      "domain": "european_compilation",
+      "country": "GB-SCT",
+      "author": "Andrew Lang",
+      "work_note": "Andrew Lang — The Brown Fairy Book (incl. some non-European)",
+      "heroes_hint_en": "Anthology — mixed regions",
+      "heroes_hint_ru": "Антология — смешанные регионы",
+      "content_lang": "en"
+    },
+    {
+      "source": "gutenberg:34705",
+      "domain": "russian",
+      "country": "RU",
+      "author": "N. A. Polevoi (tr.) / Russian skazki tradition",
+      "work_note": "Russian Fairy Tales from the Skazki of Polevoi",
+      "heroes_hint_en": "Saltan; tsars; fox; typical Russian tale figures",
+      "heroes_hint_ru": "Салтан; цари; лиса; типичные русские сказочные образы",
+      "content_lang": "en"
+    },
+    {
+      "source": "gutenberg:34956",
+      "domain": "european_compilation",
+      "country": "GB-ENG",
+      "author": "Anthony R. Montalba (compiler)",
+      "work_note": "Fairy Tales From All Nations (Montalba)",
+      "heroes_hint_en": "Anthology — many nations",
+      "heroes_hint_ru": "Антология — много народов",
+      "content_lang": "en"
+    },
+    {
+      "source": "gutenberg:38025",
+      "domain": "russian",
+      "country": "RU",
+      "author": "Leo Tolstoy (Л. Н. Толстой)",
+      "work_note": "Fables for Children, Stories for Children… (Gutenberg EN)",
+      "heroes_hint_en": "Fables; children's stories; moral tales; natural science stories",
+      "heroes_hint_ru": "Басни; рассказы для детей; поучительные сказки; естествознание",
+      "content_lang": "en"
+    },
+    {
+      "source": "gutenberg:503",
+      "domain": "european",
+      "country": "GB-SCT",
+      "author": "Andrew Lang",
+      "work_note": "Andrew Lang — The Blue Fairy Book",
+      "heroes_hint_en": "Anthology — many European and world tale figures",
+      "heroes_hint_ru": "Антология — европейские и мировые сказочные образы",
+      "content_lang": "en"
+    },
+    {
+      "source": "gutenberg:62509",
+      "domain": "russian",
+      "country": "RU",
+      "author": "Alexander Afanasyev (corpus; tr. Post Wheeler et al.)",
+      "work_note": "Russian Folk-Tales — Afanasyev tradition (Gutenberg English)",
+      "heroes_hint_en": "Fire-Bird; Vasilisa; Father Frost; Frog Princess; many tale types",
+      "heroes_hint_ru": "Жар-птица; Василиса; Мороз Иванович; Царевна-лягушка; типы сказок",
+      "content_lang": "en"
+    }
+  ],
+  "hero_mentions_top": [
+    [
+      "fables",
+      970
+    ],
+    [
+      "children's stories",
+      970
+    ],
+    [
+      "moral tales",
+      970
+    ],
+    [
+      "natural science stories",
+      970
+    ],
+    [
+      "басни",
+      970
+    ],
+    [
+      "рассказы для детей",
+      970
+    ],
+    [
+      "поучительные сказки",
+      970
+    ],
+    [
+      "естествознание",
+      970
+    ],
+    [
+      "anthology — many european and world tale figures",
+      934
+    ],
+    [
+      "scheherazade",
+      764
+    ],
+    [
+      "viziers",
+      764
+    ],
+    [
+      "djinni (var.)",
+      764
+    ],
+    [
+      "шахерезада",
+      764
+    ],
+    [
+      "визири",
+      764
+    ],
+    [
+      "джинны (разные варианты)",
+      764
+    ],
+    [
+      "fire-bird",
+      701
+    ],
+    [
+      "vasilisa",
+      701
+    ],
+    [
+      "father frost",
+      701
+    ],
+    [
+      "frog princess",
+      701
+    ],
+    [
+      "many tale types",
+      701
+    ],
+    [
+      "жар-птица",
+      701
+    ],
+    [
+      "василиса",
+      701
+    ],
+    [
+      "мороз иванович",
+      701
+    ],
+    [
+      "царевна-лягушка",
+      701
+    ],
+    [
+      "типы сказок",
+      701
+    ],
+    [
+      "red riding hood",
+      666
+    ],
+    [
+      "snow white",
+      666
+    ],
+    [
+      "wolf",
+      666
+    ],
+    [
+      "witch",
+      666
+    ],
+    [
+      "many folk figures",
+      666
+    ]
+  ],
+  "summary": {
+    "chunks_by_language": {
+      "en": 6702,
+      "ru": 1132
+    },
+    "top_countries": [
+      [
+        "RU",
+        2722
+      ],
+      [
+        "GB-SCT",
+        1585
+      ],
+      [
+        "USSR",
+        1132
+      ],
+      [
+        "MENA",
+        764
+      ],
+      [
+        "DE",
+        666
+      ]
+    ],
+    "top_authors": [
+      [
+        "Andrew Lang",
+        1585
+      ],
+      [
+        "unknown",
+        1132
+      ],
+      [
+        "Leo Tolstoy (Л. Н. Толстой)",
+        970
+      ],
+      [
+        "anonymous / compiled (tr. Lang)",
+        764
+      ],
+      [
+        "Alexander Afanasyev (corpus; tr. Post Wheeler et al.)",
+        701
+      ]
+    ],
+    "top_hero_tokens": [
+      [
+        "fables",
+        970
+      ],
+      [
+        "children's stories",
+        970
+      ],
+      [
+        "moral tales",
+        970
+      ],
+      [
+        "natural science stories",
+        970
+      ],
+      [
+        "басни",
+        970
+      ]
+    ]
+  },
+  "notes": {
+    "ru": "«Произведение» = один уникальный source (книга Gutenberg по id или локальный .txt). Чанк не равен отдельной сказке без разметки по заголовкам. Язык текста чанка — поле content_lang (en/ru).",
+    "en": "One «work» = one unique source (Gutenberg book id or local .txt). A chunk is not one tale without heading-level segmentation. Chunk text language: content_lang (en/ru)."
+  },
+  "note": "One «work» = one unique source (Gutenberg book id or local .txt). A chunk is not one tale without heading-level segmentation. Chunk text language: content_lang (en/ru)."
+}
