@@ -135,6 +135,76 @@ def _add_screenshot_slide(prs: Any, title: str, image_path: Path) -> bool:
     return True
 
 
+def _add_cropped_screenshot_slides(
+    prs: Any,
+    title: str,
+    image_path: Path,
+    *,
+    parts: int = 3,
+    overlap_px: int = 80,
+) -> tuple[int, list[str]]:
+    """Split one tall screenshot into multiple slides (vertical crops)."""
+    from io import BytesIO
+
+    if not image_path.is_file():
+        return 0, [image_path.name]
+    try:
+        from PIL import Image
+    except ImportError:
+        ok = _add_screenshot_slide(prs, title, image_path)
+        return (1, []) if ok else (0, [image_path.name])
+
+    try:
+        with Image.open(image_path) as im:
+            im = im.convert("RGB")
+            w, h = im.size
+            if parts <= 1 or h < 600:
+                ok = _add_screenshot_slide(prs, title, image_path)
+                return (1, []) if ok else (0, [image_path.name])
+
+            part_h = (h + parts - 1) // parts
+            added = 0
+            for i in range(parts):
+                y0 = max(0, i * part_h - (overlap_px if i else 0))
+                y1 = min(h, (i + 1) * part_h + (overlap_px if i < parts - 1 else 0))
+                crop = im.crop((0, y0, w, y1))
+                buf = BytesIO()
+                crop.save(buf, format="PNG", optimize=True)
+                buf.seek(0)
+
+                slide = prs.slides.add_slide(prs.slide_layouts[5])
+                slide.shapes.title.text = f"{title} ({i + 1}/{parts})"
+
+                # Reuse the same fit-by-height logic as _add_screenshot_slide,
+                # but with in-memory image.
+                from pptx.util import Inches
+
+                max_w_in = 12.35
+                max_h_in = 5.72
+                top_in = 1.06
+                ar = crop.size[1] / float(crop.size[0])
+                h_in = max_h_in
+                w_in = h_in / ar
+                if w_in > max_w_in:
+                    w_in = max_w_in
+                    h_in = w_in * ar
+                slide_w_in = float(prs.slide_width) / 914400.0
+                left_in = max(0.25, (slide_w_in - w_in) / 2.0)
+                slide.shapes.add_picture(
+                    buf,
+                    Inches(left_in),
+                    Inches(top_in),
+                    width=Inches(w_in),
+                    height=Inches(h_in),
+                )
+                added += 1
+    except OSError:
+        ok = _add_screenshot_slide(prs, title, image_path)
+        return (1, []) if ok else (0, [image_path.name])
+
+    return added, []
+
+
 def _add_workflow_and_report_screenshots(prs: Any) -> tuple[int, list[str]]:
     """Три кадра сценария и три кадра отчётов. Пропускает отсутствующие файлы."""
     added = 0
@@ -147,6 +217,11 @@ def _add_workflow_and_report_screenshots(prs: Any) -> tuple[int, list[str]]:
             missing.append(name)
     for title, name in _REPORT_SCREENSHOTS:
         p = _PNG_DIR / name
+        if name == "06_detail_after_id_click.png":
+            n, miss = _add_cropped_screenshot_slides(prs, title, p, parts=3)
+            added += n
+            missing.extend(miss)
+            continue
         if _add_screenshot_slide(prs, title, p):
             added += 1
         else:
@@ -261,32 +336,16 @@ def _build_presentation(out_path: Path) -> list[str]:
 
     _slide_bullets(
         prs,
-        "Где заходит лучше всего",
+        "Где заходит + мини-кейс + глоссарий",
         [
-            "Школа — 10–20 мин., нейтральная новость, пресет, сюжетное созвучие.",
-            "Родительские чаты — короткий пост + демо; один вопрос ребёнку.",
-            "Хабр — FastAPI, RAG/Chroma, мультиагентный пайплайн, SQLite, trace.",
+            "Где заходит: школа (10–20 мин.), родчаты (короткий пост + вопрос), "
+            "Хабр (FastAPI, RAG/Chroma, мультиагентность, SQLite, trace).",
+            "Мини-кейс: новость про мост → сказочный мотив общего дела → "
+            "вопрос ребёнку и тема для взрослого.",
+            "Глоссарий: пресет (угол поиска), RAG (фрагменты в промпт), "
+            "агент (шаг LLM: news/story/audit/qa).",
         ],
-    )
-
-    _slide_bullets(
-        prs,
-        "Мини-кейс: одна новость — три угла",
-        [
-            "Новость: мост в посёлке, зима, помощь жителей.",
-            "Сказка — мотив общего дела и награды за труд.",
-            "Вопрос ребёнку и тема для взрослого — через узнаваемый сюжет.",
-        ],
-    )
-
-    _slide_bullets(
-        prs,
-        "Глоссарий (кратко)",
-        [
-            "Пресет — угол поиска по корпусу сказок.",
-            "RAG — релевантные фрагменты в промпт.",
-            "Агент — шаг LLM: новость, сказка, аудит, QA.",
-        ],
+        level0_pt=17,
     )
 
     _slide_bullets(
@@ -298,24 +357,63 @@ def _build_presentation(out_path: Path) -> list[str]:
         ],
     )
 
-    diagram = (
-        "Пайплайн (схема):\n"
-        "Новость / RSS + пресет → RAG → структура новости → черновик "
-        "сказки → аудит + вопрос–ответ → отчёт и журнал LLM."
+    algorithm = (
+        "Пайплайн: новость / RSS + пресет → RAG → структура новости → "
+        "черновик сказки → аудит + вопрос–ответ → отчёт и журнал LLM.\n\n"
+        "Шаги:\n"
+        "1) Ввод новости или карточки RSS.\n"
+        "2) Пресет — поиск по корпусу сказок.\n"
+        "3) Агенты: структура → сказка → аудит → вопрос–ответ.\n"
+        "4) RAG в текст.\n"
+        "5) Отчёт и trace по шагам."
     )
-    _slide_title_content(prs, "Алгоритм", diagram, body_pt=17)
+    _slide_title_content(
+        prs,
+        "Алгоритм (схема + шаги)",
+        algorithm,
+        body_pt=16,
+        title_pt=38,
+    )
 
     _slide_bullets(
         prs,
-        "Шаги",
+        "Параметры вызовов LLM (важные свойства)",
         [
-            "1. Ввод новости или карточки RSS.",
-            "2. Пресет — поиск по корпусу сказок.",
-            "3. Агенты: структура → сказка → аудит → вопрос–ответ.",
-            "4. RAG в текст.",
-            "5. Отчёт и trace по шагам.",
+            "news (JSON): temperature=0.2, max_tokens=1200 — сводка, темы, "
+            "ключевые слова для RAG.",
+            "story (текст): temperature=0.85, max_tokens=3500 — цельная "
+            "сказка 600–1200 слов.",
+            "audit (JSON): temperature=0.2, max_tokens=1200 — проверка "
+            "целостности и релевантности результата.",
+            "qa (JSON): temperature=0.3, max_tokens=700 — вопрос и "
+            "эталонный ответ для обсуждения/обучения.",
         ],
-        level0_pt=19,
+        level0_pt=16,
+    )
+
+    _slide_bullets(
+        prs,
+        "Embeddings (RAG) — какие и почему",
+        [
+            "Модель: paraphrase-multilingual-MiniLM-L12-v2 (sentence-transformers).",
+            "Почему: мультиязычность (RU запросы + EN/RU корпус), "
+            "быстрая и стабильная на CPU.",
+            "Выход: вектор для семантического поиска фрагментов сказок.",
+        ],
+        level0_pt=17,
+    )
+
+    _slide_bullets(
+        prs,
+        "RAG backend и хранение",
+        [
+            "По умолчанию: Chroma (data/chroma_fairy_tales), коллекция "
+            "fairy_tales_plots.",
+            "Chunking: 900 символов + overlap 120 — держим связность сюжета.",
+            "Демо без БД: snapshot JSON data/notebook_rag_snapshot.json "
+            "(удобно для e2e/ноутбука).",
+        ],
+        level0_pt=17,
     )
 
     n_shots, miss_shots = _add_workflow_and_report_screenshots(prs)
@@ -337,7 +435,7 @@ def _build_presentation(out_path: Path) -> list[str]:
         tail = "Отсутствуют: " + ", ".join(miss_shots)
         _slide_title_content(prs, "Пропущенные кадры", tail, body_pt=16)
 
-    _add_collage_slide(prs)
+    # Коллаж убран по запросу (есть отдельный слайд со скриншотами UI).
 
     _slide_bullets(
         prs,
